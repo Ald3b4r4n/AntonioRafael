@@ -1,0 +1,101 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--nav-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 12, 20, 0.78),
+    rgba(5, 12, 20, 0.45)
+  );
+  backdrop-filter: saturate(120%) blur(10px);
+  border-bottom: 1px solid var(--stroke);
+}
+
+.bar {
+  height: 100%;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: #08202f;
+  background: linear-gradient(180deg, var(--neon-2), var(--neon));
+  box-shadow: 0 8px 22px rgba(120, 232, 255, 0.35);
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.title strong {
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+.title span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+.tab {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  transition: 0.22s ease;
+  box-shadow: var(--shadow-1);
+}
+.tab:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+.active {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.06)
+  );
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 26px rgba(120, 180, 235, 0.25);
+}
+
+/* Friso angular inspirado, porém único */
+.ribbon {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(
+      135deg,
+      transparent 0 45%,
+      rgba(120, 232, 255, 0.35) 45% 55%,
+      transparent 55% 100%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+}

@@ -1,0 +1,65 @@
+.app {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+
+  /* Blueprint grid (quadrícula técnica) + gradientes suaves */
+  background:
+    /* brilhos suaves */ radial-gradient(
+      1000px 600px at 15% 0%,
+      rgba(120, 232, 255, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 85% 10%,
+      rgba(182, 197, 255, 0.1),
+      transparent 60%
+    ),
+    /* grid grosso (cada 160px) */
+      repeating-linear-gradient(
+        0deg,
+        var(--grid-bold) 0 2px,
+        transparent 2px 160px
+      ),
+    repeating-linear-gradient(
+      90deg,
+      var(--grid-bold) 0 2px,
+      transparent 2px 160px
+    ),
+    /* grid fino (cada 40px) */
+      repeating-linear-gradient(
+        0deg,
+        var(--grid-line) 0 1px,
+        transparent 1px 40px
+      ),
+    repeating-linear-gradient(
+      90deg,
+      var(--grid-line) 0 1px,
+      transparent 1px 40px
+    ),
+    /* base */ linear-gradient(180deg, var(--navy-900), var(--navy-800));
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2; /* acima da chuva */
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 24px clamp(16px, 3vw, 32px);
+}
+
+.section {
+  min-height: calc(100svh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  padding-block: clamp(12px, 3vh, 48px);
+}

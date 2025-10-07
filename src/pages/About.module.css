@@ -1,0 +1,108 @@
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(18px, 4vw, 48px);
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--stroke);
+  font-weight: 700;
+  color: var(--muted);
+  backdrop-filter: blur(8px);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 14px var(--neon);
+}
+
+.title {
+  margin: 6px 0 0 0;
+  font-family: "Outfit", sans-serif;
+  font-size: clamp(28px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1.02;
+  text-shadow: 0 8px 28px rgba(120, 232, 255, 0.35);
+}
+.title span {
+  color: #0b1f2f;
+  background: linear-gradient(180deg, var(--neon), #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--neon-2);
+  text-transform: uppercase;
+}
+
+.lead {
+  color: #d7e3ef;
+  line-height: 1.7;
+  max-width: 60ch;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.chips span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  color: #e6f2ff;
+}
+
+.social {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+.social a {
+  color: var(--neon);
+  font-weight: 800;
+  text-decoration: none;
+}
+.social a:hover {
+  text-decoration: underline;
+}
+
+.right {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .right {
+    order: -1;
+  }
+}

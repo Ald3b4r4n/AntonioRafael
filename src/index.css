@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --navy-900: #0a1723;
+  --navy-800: #0f2030;
+  --navy-700: #14273b;
+  --grid-line: rgba(180, 210, 240, 0.06);
+  --grid-bold: rgba(180, 210, 240, 0.1);
+
+  --text: #eaf2fb;
+  --muted: #b9c7d8;
+
+  --neon: #78e8ff;
+  --neon-2: #b6c5ff;
+  --accent: #6fd3ff;
+
+  --stroke: rgba(255, 255, 255, 0.16);
+  --glass: rgba(255, 255, 255, 0.06);
+  --radius: 14px;
+  --nav-h: 72px;
+  --container: 1200px;
+
+  --shadow-1: 0 8px 28px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+html,
+body {
+  margin: 0;
+  background: var(--navy-800);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+/* UTILITÁRIOS GLOBAIS (fix: agora as páginas podem usar sem importar módulos) */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 24px clamp(16px, 3vw, 32px);
+}
+
+.section {
+  min-height: calc(100svh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  padding-block: clamp(12px, 3vh, 48px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a141f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-2), var(--neon));
+  border-radius: 8px;
+}

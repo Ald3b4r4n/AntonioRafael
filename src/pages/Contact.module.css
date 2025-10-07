@@ -1,0 +1,101 @@
+.header {
+  text-align: center;
+  margin-bottom: clamp(14px, 3.5vh, 34px);
+}
+.header h1 {
+  margin: 0 0 6px 0;
+  font-size: clamp(28px, 4.4vw, 48px);
+  background: linear-gradient(180deg, #eaf3ff, #a9c6ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header p {
+  color: var(--muted);
+}
+
+.card {
+  position: relative;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  overflow: hidden;
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  box-shadow: var(--shadow-1);
+}
+
+.cardGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.12) 0 1px,
+      transparent 1px 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12) 0 1px,
+      transparent 1px 24px
+    );
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  outline: none;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  transition: 0.2s ease;
+}
+.form input:focus,
+.form textarea:focus {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 4px rgba(120, 180, 235, 0.2);
+}
+.form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.form button {
+  margin-top: 6px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(180deg, var(--neon-2), var(--neon));
+  color: #08202f;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+.form button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.links a {
+  color: var(--neon);
+  font-weight: 800;
+  text-decoration: none;
+}
+.links a:hover {
+  text-decoration: underline;
+}
