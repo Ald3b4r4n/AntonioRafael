@@ -7,16 +7,22 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="theme-color" content="#0f2030" />
+
     <title>Antônio Rafael — Desenvolvedor Full Stack</title>
     <meta
       name="description"
       content="Portfólio de Antônio Rafael: desenvolvedor Full Stack com foco em React e JavaScript."
     />
-    <link rel="canonical" href="https://seu-dominio.com/" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Use seu domínio real -->
+    <link rel="canonical" href="https://antonio-rafael.vercel.app/" />
     <meta name="robots" content="index,follow" />
 
-    <!-- Open Graph (fallback geral; páginas sobrescrevem via SEO.jsx) -->
+    <!-- Favicon e ícones -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- iOS/Android usam este como ícone do atalho -->
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+    <!-- Open Graph (fallback geral; páginas podem sobrescrever via SEO.jsx) -->
     <meta
       property="og:title"
       content="Antônio Rafael — Desenvolvedor Full Stack"
@@ -25,10 +31,12 @@
       property="og:description"
       content="Portfólio com projetos em React, Node e bancos SQL/NoSQL. Fale comigo!"
     />
-    <meta property="og:url" content="https://seu-dominio.com/" />
+    <meta property="og:url" content="https://antonio-rafael.vercel.app/" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://seu-dominio.com/og-image.jpg" />
+    <!-- Coloque um arquivo em public/og-image.jpg ou ajuste o caminho abaixo -->
+    <meta property="og:image" content="/og-image.jpg" />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Portfólio — Antônio Rafael" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -40,7 +48,7 @@
       name="twitter:description"
       content="Portfólio com projetos em React, Node e bancos SQL/NoSQL. Fale comigo!"
     />
-    <meta name="twitter:image" content="https://seu-dominio.com/og-image.jpg" />
+    <meta name="twitter:image" content="/og-image.jpg" />
 
     <!-- Manifest PWA -->
     <link rel="manifest" href="/manifest.webmanifest" />

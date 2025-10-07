@@ -1,8 +1,8 @@
-/* Palco do crachá: limita a altura e mantém tudo centrado */
+/* Palco */
 .stage {
   position: relative;
   width: 100%;
-  min-height: clamp(420px, 64svh, 640px);
+  min-height: clamp(420px, 64dvh, 640px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -11,14 +11,14 @@
   contain: layout paint;
 }
 
-/* Barra fixa (âncora) */
+/* Barra ancorada; respeita área segura em iPhone */
 .ceiling {
   --ceiling-h: 10px;
   position: absolute;
-  top: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 4px);
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(200px, 28vw, 320px);
+  width: clamp(180px, 28vw, 320px);
   height: var(--ceiling-h);
   border-radius: 10px;
   background: linear-gradient(
@@ -32,18 +32,18 @@
   z-index: 1;
 }
 
-/* Pivô: só rota. Nada de translate durante interação */
+/* Pivô */
 .pivot {
-  /* Dimensões responsivas com base na viewport */
-  --card-h: clamp(260px, 38svh, 380px);
+  /* Desktop defaults (proporção tradicional) */
   --card-w: clamp(200px, 26svh, 300px);
+  --card-h: clamp(260px, 38svh, 380px);
   --strap-h: clamp(120px, 14svh, 150px);
   --ring: 30px;
   --hook-h: 26px;
   --gap: 12px;
 
   position: absolute;
-  top: var(--ceiling-h);
+  top: calc(env(safe-area-inset-top, 0px) + var(--ceiling-h));
   left: 50%;
   transform: translateX(-50%);
   width: 1px;
@@ -51,14 +51,13 @@
     var(--strap-h) + var(--ring) + var(--hook-h) + var(--gap) + var(--card-h)
   );
   z-index: 2;
-
   transform-origin: 50% 0%;
   backface-visibility: hidden;
   transform-style: flat;
   will-change: transform;
 }
 
-/* Corda */
+/* Cordão */
 .cord {
   position: absolute;
   top: 0;
@@ -80,7 +79,6 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
 
-/* Anel */
 .ring {
   position: absolute;
   left: 50%;
@@ -99,7 +97,6 @@
   );
 }
 
-/* Gancho */
 .hook {
   position: absolute;
   left: 50%;
@@ -113,7 +110,7 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
-/* Cartão */
+/* Card */
 .card {
   position: absolute;
   left: 50%;
@@ -122,8 +119,8 @@
   width: var(--card-w);
   height: var(--card-h);
   border-radius: 18px;
-  overflow: hidden; /* garante clip do conteúdo */
-  clip-path: inset(0 round 18px); /* clip “perfeito” no border-radius */
+  overflow: hidden;
+  clip-path: inset(0 round 18px);
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: linear-gradient(
       180deg,
@@ -141,26 +138,23 @@
   grid-template-columns: 22% 1fr;
   grid-template-rows: 1fr auto auto;
   z-index: 3;
-
   cursor: grab;
   backface-visibility: hidden;
 
-  /* Permite container queries específicas para o conteúdo interno */
   container-type: inline-size;
   container-name: badge;
 }
+
 .card:active {
   cursor: grabbing;
 }
 
-/* Faixa lateral */
 .sideBand {
   grid-row: 1 / 4;
   background: linear-gradient(180deg, var(--neon-2), var(--neon));
   mix-blend-mode: screen;
 }
 
-/* Foto */
 .photoArea {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -177,16 +171,15 @@
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
-/* Infos */
 .info {
   grid-column: 2 / 3;
   grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 16px 16px 14px; /* espaço à direita maior */
-  overflow: hidden; /* nada escapa do bloco de texto */
-  contain: layout paint; /* estabilidade dentro do card */
+  padding: 8px 16px 16px 14px;
+  overflow: hidden;
+  contain: layout paint;
 }
 
 .name {
@@ -205,29 +198,22 @@
   word-break: break-word;
 }
 
-/* AGORA: “Full Stack Developer” em uma única linha, sem vazar */
+/* 1 linha fixa, sem quebrar */
 .role {
-  color: #eaf3ff;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  line-height: 1.1;
-  font-size: clamp(12px, 1.3vw, 14px);
-  max-width: 100%;
-
-  white-space: nowrap; /* não quebra */
-  overflow: hidden; /* corta o excesso */
-  text-overflow: ellipsis; /* reticências se faltar espaço */
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Ajustes responsivos específicos ao tamanho do card (container queries) */
 @container badge (max-width: 280px) {
   .role {
-    font-size: 12px;
+    font-size: 12.5px;
   }
 }
 @container badge (max-width: 240px) {
   .role {
-    font-size: 11px;
+    font-size: 11.5px;
   }
 }
 
@@ -240,7 +226,6 @@
   word-break: break-word;
 }
 
-/* Reflexo */
 .gloss {
   position: absolute;
   inset: -40% -10% auto -10%;
@@ -255,13 +240,20 @@
   pointer-events: none;
 }
 
-/* Responsivo: garante que caiba sem passar do limite do hero */
-@media (max-width: 520px) {
+/* MOBILE: largura manda no tamanho; altura proporcional; corda menor */
+@media (max-width: 600px) {
   .stage {
-    min-height: clamp(420px, 60svh, 520px);
+    min-height: clamp(380px, 60dvh, 520px);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .ceiling {
+    width: clamp(160px, 60vw, 260px);
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
   }
   .pivot {
-    --strap-h: clamp(110px, 12svh, 140px);
-    --card-h: clamp(240px, 44svh, 340px);
+    --card-w: min(72vw, 300px); /* baseia no viewport width */
+    --card-h: calc(var(--card-w) * 1.35);
+    --strap-h: clamp(90px, 14dvh, 120px);
+    --gap: 10px;
   }
 }

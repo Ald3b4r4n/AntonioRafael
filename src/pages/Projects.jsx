@@ -55,7 +55,7 @@ export default function Projects() {
       <div className="container">
         <div className={styles.header}>
           <h1>Projetos</h1>
-          <p>Seleção de trabalhos — organizado, funcional e direto ao ponto.</p>
+          <p>Seleção de trabalhos recentes.</p>
         </div>
         <div className={styles.grid}>
           {PROJECTS.map((p) => (
