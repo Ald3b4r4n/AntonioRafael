@@ -1,46 +1,32 @@
 import styles from "./Nav.module.css";
 
-export default function Nav({ activeTab, setActiveTab }) {
+export default function Nav() {
   return (
-    <header className={styles.header}>
-      <div className={styles.bar}>
-        <div className={styles.brand}>
-          <div className={styles.logo}>AR</div>
-          <div className={styles.title}>
-            <strong>Antônio Rafael</strong>
-            <span>Portfólio</span>
-          </div>
-        </div>
+    <nav className={styles.nav}>
+      <div className={styles.row}>
+        <a href="/" className={styles.brand} aria-label="Início">
+          <span className={styles.brandLogo}>AR</span>
+          <span className={styles.brandText}>
+            <span className={styles.brandName}>Antônio Rafael</span>
+            <span className={styles.brandDivider} aria-hidden="true">
+              {" "}
+            </span>
+            <span className={styles.brandSuffix}>Portfólio</span>
+          </span>
+        </a>
 
-        <nav className={styles.tabs}>
-          <button
-            className={`${styles.tab} ${
-              activeTab === "about" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("about")}
-          >
+        <div className={styles.tabs} role="navigation" aria-label="Seções">
+          <a className={styles.tab} href="#about">
             Sobre Mim
-          </button>
-          <button
-            className={`${styles.tab} ${
-              activeTab === "projects" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("projects")}
-          >
+          </a>
+          <a className={styles.tab} href="#projects">
             Projetos
-          </button>
-          <button
-            className={`${styles.tab} ${
-              activeTab === "contact" ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab("contact")}
-          >
+          </a>
+          <a className={styles.tab} href="#contact">
             Entre em Contato
-          </button>
-        </nav>
+          </a>
+        </div>
       </div>
-      {/* friso angular estilizado (sem copiar o do exemplo) */}
-      <div className={styles.ribbon} />
-    </header>
+    </nav>
   );
 }
