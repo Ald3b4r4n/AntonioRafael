@@ -1,4 +1,4 @@
-/* Palco */
+/* Palco do crachá */
 .stage {
   position: relative;
   width: 100%;
@@ -9,13 +9,14 @@
   user-select: none;
   touch-action: none;
   contain: layout paint;
+  margin-bottom: clamp(28px, 8dvh, 80px); /* mais respiro abaixo */
 }
 
-/* Barra ancorada; respeita área segura em iPhone */
+/* Barra superior */
 .ceiling {
   --ceiling-h: 10px;
   position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 4px);
+  top: calc(env(safe-area-inset-top, 0px) + 6px);
   left: 50%;
   transform: translateX(-50%);
   width: clamp(180px, 28vw, 320px);
@@ -32,9 +33,8 @@
   z-index: 1;
 }
 
-/* Pivô */
+/* Pivô (grupo que gira) */
 .pivot {
-  /* Desktop defaults (proporção tradicional) */
   --card-w: clamp(200px, 26svh, 300px);
   --card-h: clamp(260px, 38svh, 380px);
   --strap-h: clamp(120px, 14svh, 150px);
@@ -57,7 +57,7 @@
   will-change: transform;
 }
 
-/* Cordão */
+/* Cordão e peças */
 .cord {
   position: absolute;
   top: 0;
@@ -78,7 +78,6 @@
   border-radius: 8px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
-
 .ring {
   position: absolute;
   left: 50%;
@@ -96,7 +95,6 @@
     transparent 60%
   );
 }
-
 .hook {
   position: absolute;
   left: 50%;
@@ -144,7 +142,6 @@
   container-type: inline-size;
   container-name: badge;
 }
-
 .card:active {
   cursor: grabbing;
 }
@@ -154,7 +151,6 @@
   background: linear-gradient(180deg, var(--neon-2), var(--neon));
   mix-blend-mode: screen;
 }
-
 .photoArea {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -197,15 +193,12 @@
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-
-/* 1 linha fixa, sem quebrar */
 .role {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 @container badge (max-width: 280px) {
   .role {
     font-size: 12.5px;
@@ -216,7 +209,6 @@
     font-size: 11.5px;
   }
 }
-
 .meta {
   color: #c9d7e6;
   font-weight: 600;
@@ -240,20 +232,21 @@
   pointer-events: none;
 }
 
-/* MOBILE: largura manda no tamanho; altura proporcional; corda menor */
+/* MOBILE (≤ 600px) — reduzir bem */
 @media (max-width: 600px) {
   .stage {
-    min-height: clamp(380px, 60dvh, 520px);
+    min-height: clamp(360px, 56dvh, 500px);
     padding-top: env(safe-area-inset-top, 0px);
+    margin-bottom: clamp(36px, 10dvh, 96px); /* mais espaço abaixo do crachá */
   }
   .ceiling {
-    width: clamp(160px, 60vw, 260px);
-    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    width: clamp(150px, 56vw, 240px);
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
   }
   .pivot {
-    --card-w: min(72vw, 300px); /* baseia no viewport width */
-    --card-h: calc(var(--card-w) * 1.35);
-    --strap-h: clamp(90px, 14dvh, 120px);
-    --gap: 10px;
+    --card-w: min(58vw, 230px); /* era ~72vw — reduzi */
+    --card-h: calc(var(--card-w) * 1.25); /* proporção mais baixa */
+    --strap-h: clamp(70px, 10dvh, 100px); /* corda mais curta */
+    --gap: 8px;
   }
 }
