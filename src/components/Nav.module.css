@@ -1,4 +1,5 @@
-/* Barra de navegação “chips” — proporcional e elegante no mobile e desktop */
+/* Mantém o visual dos chips como antes, apenas com escalas responsivas e sem deformar no mobile */
+
 .nav {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
@@ -13,24 +14,22 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
 
-.navInner {
+.row {
   max-width: 1120px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-/* Marca/título à esquerda (trunca com elegância no mobile) */
+/* Marca à esquerda (trunca com elegância no mobile) */
 .brand {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 0; /* permite truncar */
+  min-width: 0;
 }
 .brandLogo {
   width: 28px;
@@ -42,6 +41,7 @@
   font-weight: 900;
   display: grid;
   place-items: center;
+  font-size: 14px;
 }
 .brandText {
   color: #eaf3ff;
@@ -53,56 +53,89 @@
   text-overflow: ellipsis;
 }
 
-/* Lista de links à direita (scroll horizontal suave no mobile) */
-.navList {
+/* Chips à direita — aparência original, só que responsiva */
+.tabs {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: clamp(6px, 2.6vw, 12px);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 2px 0;
-}
-.navList::-webkit-scrollbar {
-  display: none;
+  gap: clamp(6px, 2.4vw, 12px);
+  flex-wrap: wrap; /* no desktop pode quebrar em 2 linhas se preciso */
 }
 
-.navLink {
+/* Chip (“como era”), com escalas via clamp */
+.tab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(6px, 1.8vw, 10px) clamp(10px, 3.4vw, 16px);
+  padding: clamp(6px, 1.8vw, 10px) clamp(10px, 3.2vw, 16px);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    ),
+    rgba(255, 255, 255, 0.06);
   color: #eef6ff;
   text-decoration: none;
   font-weight: 800;
-  font-size: clamp(12px, 3.2vw, 14px);
+  font-size: clamp(12px, 3.1vw, 14px);
   line-height: 1;
   letter-spacing: 0.2px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18) inset,
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 4px 10px rgba(0, 0, 0, 0.18);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
 }
-.navLink:active {
+.tab:active {
   transform: translateY(1px);
 }
-.navLink[aria-current="page"],
-.navLink:hover {
-  background: rgba(168, 219, 255, 0.18);
+.tab[aria-current="page"],
+.tab:hover {
+  background: linear-gradient(
+      180deg,
+      rgba(168, 219, 255, 0.18),
+      rgba(168, 219, 255, 0.08)
+    ),
+    rgba(255, 255, 255, 0.08);
   border-color: rgba(168, 219, 255, 0.45);
 }
 
-/* Quebra suave em telas muito estreitas */
+/* Mobile: preserva o visual original, mas garante proporção e evita “apertar”
+   - A barra vira duas linhas (brand em cima, chips abaixo) OU
+   - Scroll horizontal suave (preferência aqui) */
+@media (max-width: 600px) {
+  .row {
+    gap: 8px;
+  }
+  .tabs {
+    flex-wrap: nowrap; /* não quebra; vira carrossel horizontal */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 2px 0;
+    max-width: 100%;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mantém o chip no mesmo estilo, só escalando um pouco menos */
+  .tab {
+    font-size: clamp(12px, 3.4vw, 13.5px);
+    padding: 6px clamp(10px, 3.6vw, 14px);
+  }
+}
+
+/* Telas muito estreitas */
 @media (max-width: 380px) {
   .brandLogo {
     width: 26px;
     height: 26px;
+    font-size: 13px;
   }
-  .navLink {
+  .tab {
     font-size: 12px;
     padding: 6px 10px;
   }
