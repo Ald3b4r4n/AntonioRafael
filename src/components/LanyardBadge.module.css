@@ -1,20 +1,41 @@
-/* Palco do crachá */
+/* Palco do crachá: agora define as variáveis de layout
+   para que possamos calcular a altura mínima do bloco e evitar sobreposição */
 .stage {
+  /* Vars globais usadas também pelo .pivot */
+  --ring: 30px;
+  --hook-h: 26px;
+  --gap: 12px;
+
+  /* Desktop defaults (podem ser ajustados no @media) */
+  --card-w: clamp(200px, 26svh, 300px);
+  --card-h: clamp(260px, 38svh, 380px);
+  --strap-h: clamp(120px, 14svh, 150px);
+  --ceiling-h: 10px;
+
   position: relative;
   width: 100%;
-  min-height: clamp(420px, 64dvh, 640px);
+
+  /* Altura mínima calculada: barra + corda + anel + gancho + gap + cartão
+     + um “buffer” para rotação e variação de barra do iOS */
+  min-height: calc(
+    env(safe-area-inset-top, 0px) + var(--ceiling-h) + var(--strap-h) +
+      var(--ring) + var(--hook-h) + var(--gap) + var(--card-h) +
+      clamp(24px, 6dvh, 56px) /* buffer extra */
+  );
+
   display: flex;
   align-items: flex-start;
   justify-content: center;
   user-select: none;
   touch-action: none;
   contain: layout paint;
-  margin-bottom: clamp(28px, 8dvh, 80px); /* mais respiro abaixo */
+  isolation: isolate; /* stacking context estável */
+  margin-bottom: clamp(28px, 8dvh, 80px); /* respiro abaixo */
+  overflow: visible; /* nunca cortar o crachá */
 }
 
-/* Barra superior */
+/* Barra ancorada; respeita a área segura do iPhone */
 .ceiling {
-  --ceiling-h: 10px;
   position: absolute;
   top: calc(env(safe-area-inset-top, 0px) + 6px);
   left: 50%;
@@ -33,15 +54,8 @@
   z-index: 1;
 }
 
-/* Pivô (grupo que gira) */
+/* Pivô (grupo que gira) — agora herda as variáveis do .stage */
 .pivot {
-  --card-w: clamp(200px, 26svh, 300px);
-  --card-h: clamp(260px, 38svh, 380px);
-  --strap-h: clamp(120px, 14svh, 150px);
-  --ring: 30px;
-  --hook-h: 26px;
-  --gap: 12px;
-
   position: absolute;
   top: calc(env(safe-area-inset-top, 0px) + var(--ceiling-h));
   left: 50%;
@@ -108,7 +122,7 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
-/* Card */
+/* Cartão */
 .card {
   position: absolute;
   left: 50%;
@@ -138,7 +152,6 @@
   z-index: 3;
   cursor: grab;
   backface-visibility: hidden;
-
   container-type: inline-size;
   container-name: badge;
 }
@@ -151,6 +164,7 @@
   background: linear-gradient(180deg, var(--neon-2), var(--neon));
   mix-blend-mode: screen;
 }
+
 .photoArea {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -193,6 +207,8 @@
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+/* “Full Stack Developer” em 1 linha */
 .role {
   font-size: 14px;
   white-space: nowrap;
@@ -232,21 +248,26 @@
   pointer-events: none;
 }
 
-/* MOBILE (≤ 600px) — reduzir bem */
+/* MOBILE (≤ 600px): reduzimos bem e encurtamos corda */
 @media (max-width: 600px) {
   .stage {
-    min-height: clamp(360px, 56dvh, 500px);
+    /* Reduz o cartão e corda no mobile via variáveis do container */
+    --card-w: min(56vw, 224px);
+    --card-h: calc(var(--card-w) * 1.22);
+    --strap-h: clamp(68px, 10dvh, 96px);
+
+    /* Mais respiro após o crachá para que o conteúdo abaixo não encoste */
+    min-height: calc(
+      env(safe-area-inset-top, 0px) + var(--ceiling-h) + var(--strap-h) +
+        var(--ring) + var(--hook-h) + var(--gap) + var(--card-h) +
+        clamp(36px, 10dvh, 96px)
+    );
+
     padding-top: env(safe-area-inset-top, 0px);
-    margin-bottom: clamp(36px, 10dvh, 96px); /* mais espaço abaixo do crachá */
+    margin-bottom: clamp(40px, 12dvh, 120px);
   }
   .ceiling {
     width: clamp(150px, 56vw, 240px);
     top: calc(env(safe-area-inset-top, 0px) + 10px);
-  }
-  .pivot {
-    --card-w: min(58vw, 230px); /* era ~72vw — reduzi */
-    --card-h: calc(var(--card-w) * 1.25); /* proporção mais baixa */
-    --strap-h: clamp(70px, 10dvh, 100px); /* corda mais curta */
-    --gap: 8px;
   }
 }
