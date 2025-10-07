@@ -1,40 +1,107 @@
+/* Barra de navegação “chips” — proporcional e elegante no mobile e desktop */
 .nav {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 50;
+  width: 100%;
+  padding: 6px clamp(8px, 3vw, 16px);
+  background: linear-gradient(
+    180deg,
+    rgba(8, 16, 28, 0.55),
+    rgba(8, 16, 28, 0.25)
+  );
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
+
+.navInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Marca/título à esquerda (trunca com elegância no mobile) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0; /* permite truncar */
+}
+.brandLogo {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #a8dbff, #8fb6ff);
+  color: #0b1f2f;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+}
+.brandText {
+  color: #eaf3ff;
+  font-weight: 800;
+  font-size: clamp(12px, 2.8vw, 14px);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Lista de links à direita (scroll horizontal suave no mobile) */
 .navList {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 2vw, 12px);
-  padding: 8px clamp(10px, 3vw, 16px);
+  gap: clamp(6px, 2.6vw, 12px);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
 }
 .navList::-webkit-scrollbar {
   display: none;
 }
 
-.navItem {
-}
 .navLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(6px, 1.8vw, 10px) clamp(10px, 3.4vw, 16px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: #eaf3ff;
+  background: rgba(255, 255, 255, 0.07);
+  color: #eef6ff;
   text-decoration: none;
-  padding: clamp(6px, 1.5vw, 10px) clamp(10px, 3vw, 16px);
-  font-weight: 700;
-  font-size: clamp(12px, 3.2vw, 14px); /* ajusta fonte no mobile */
+  font-weight: 800;
+  font-size: clamp(12px, 3.2vw, 14px);
+  line-height: 1;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18) inset,
+    0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
 }
+.navLink:active {
+  transform: translateY(1px);
+}
+.navLink[aria-current="page"],
+.navLink:hover {
+  background: rgba(168, 219, 255, 0.18);
+  border-color: rgba(168, 219, 255, 0.45);
+}
 
+/* Quebra suave em telas muito estreitas */
 @media (max-width: 380px) {
+  .brandLogo {
+    width: 26px;
+    height: 26px;
+  }
   .navLink {
     font-size: 12px;
     padding: 6px 10px;
