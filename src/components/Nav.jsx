@@ -1,10 +1,11 @@
+import { NavLink, Link } from "react-router-dom";
 import styles from "./Nav.module.css";
 
 export default function Nav() {
   return (
     <nav className={styles.nav}>
       <div className={styles.row}>
-        <a href="/" className={styles.brand} aria-label="Início">
+        <Link to="/" className={styles.brand} aria-label="Início">
           <span className={styles.brandLogo}>AR</span>
           <span className={styles.brandText}>
             <span className={styles.brandName}>Antônio Rafael</span>
@@ -13,18 +14,19 @@ export default function Nav() {
             </span>
             <span className={styles.brandSuffix}>Portfólio</span>
           </span>
-        </a>
+        </Link>
 
         <div className={styles.tabs} role="navigation" aria-label="Seções">
-          <a className={styles.tab} href="pages/About.jsx">
+          {/* NavLink adiciona automaticamente aria-current="page" quando ativo */}
+          <NavLink to="/" end className={styles.tab}>
             Sobre Mim
-          </a>
-          <a className={styles.tab} href="pages/Projects.jsx">
+          </NavLink>
+          <NavLink to="/projetos" className={styles.tab}>
             Projetos
-          </a>
-          <a className={styles.tab} href="pages/Contact.jsx">
+          </NavLink>
+          <NavLink to="/contato" className={styles.tab}>
             Entre em Contato
-          </a>
+          </NavLink>
         </div>
       </div>
     </nav>
