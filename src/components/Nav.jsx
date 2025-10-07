@@ -16,13 +16,13 @@ export default function Nav() {
         </a>
 
         <div className={styles.tabs} role="navigation" aria-label="Seções">
-          <a className={styles.tab} href="#about">
+          <a className={styles.tab} href="pages/About.jsx">
             Sobre Mim
           </a>
-          <a className={styles.tab} href="#projects">
+          <a className={styles.tab} href="pages/Projects.jsx">
             Projetos
           </a>
-          <a className={styles.tab} href="#contact">
+          <a className={styles.tab} href="pages/Contact.jsx">
             Entre em Contato
           </a>
         </div>
