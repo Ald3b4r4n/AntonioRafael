@@ -69,7 +69,14 @@ export default function LanyardBadge() {
         >
           <div className={styles.sideBand} />
           <div className={styles.photoArea}>
-            <img src="public/profile.jpg" alt="Foto" loading="lazy" />
+            <img
+              src="/profile.jpg"
+              alt="Foto"
+              loading="lazy"
+              decoding="async"
+              width="280"
+              height="280"
+            />
           </div>
           <div className={styles.info}>
             <div className={styles.name}>
