@@ -1,34 +1,46 @@
-import { NavLink, Link } from "react-router-dom";
 import styles from "./Nav.module.css";
 
-export default function Nav() {
+export default function Nav({ activeTab, setActiveTab }) {
   return (
-    <nav className={styles.nav}>
-      <div className={styles.row}>
-        <Link to="/" className={styles.brand} aria-label="Início">
-          <span className={styles.brandLogo}>AR</span>
-          <span className={styles.brandText}>
-            <span className={styles.brandName}>Antônio Rafael</span>
-            <span className={styles.brandDivider} aria-hidden="true">
-              {" "}
-            </span>
-            <span className={styles.brandSuffix}>Portfólio</span>
-          </span>
-        </Link>
-
-        <div className={styles.tabs} role="navigation" aria-label="Seções">
-          {/* NavLink adiciona automaticamente aria-current="page" quando ativo */}
-          <NavLink to="/" end className={styles.tab}>
-            Sobre Mim
-          </NavLink>
-          <NavLink to="/projetos" className={styles.tab}>
-            Projetos
-          </NavLink>
-          <NavLink to="/contato" className={styles.tab}>
-            Entre em Contato
-          </NavLink>
+    <header className={styles.header}>
+      <div className={styles.bar}>
+        <div className={styles.brand}>
+          <div className={styles.logo}>AR</div>
+          <div className={styles.title}>
+            <strong>Antônio Rafael</strong>
+            <span>Portfólio</span>
+          </div>
         </div>
+
+        <nav className={styles.tabs}>
+          <button
+            className={`${styles.tab} ${
+              activeTab === "about" ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab("about")}
+          >
+            Sobre Mim
+          </button>
+          <button
+            className={`${styles.tab} ${
+              activeTab === "projects" ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab("projects")}
+          >
+            Projetos
+          </button>
+          <button
+            className={`${styles.tab} ${
+              activeTab === "contact" ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab("contact")}
+          >
+            Entre em Contato
+          </button>
+        </nav>
       </div>
-    </nav>
+      {/* friso angular estilizado (sem copiar o do exemplo) */}
+      <div className={styles.ribbon} />
+    </header>
   );
 }

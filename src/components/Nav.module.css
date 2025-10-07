@@ -1,10 +1,9 @@
-/* Barra fixa com o visual original dos chips, responsiva no mobile */
-.nav {
+/* Header fixo com fundo translúcido e blur */
+.header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 50;
   width: 100%;
-  padding: 6px clamp(8px, 3vw, 16px);
   background: linear-gradient(
     180deg,
     rgba(8, 16, 28, 0.55),
@@ -15,13 +14,14 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.row {
+/* Barra interna (conteúdo) */
+.bar {
   max-width: 1120px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 6px clamp(8px, 3vw, 16px);
   min-height: 44px;
 }
 
@@ -30,10 +30,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-width: 0; /* permite truncar o texto a seguir */
+  min-width: 0; /* permite truncar o título long */
   text-decoration: none;
 }
-.brandLogo {
+
+/* Bolinha "AR" */
+.logo {
   width: 28px;
   height: 28px;
   flex: 0 0 28px;
@@ -41,44 +43,59 @@
   background: linear-gradient(180deg, #a8dbff, #8fb6ff);
   color: #0b1f2f;
   font-weight: 900;
+  font-size: 14px;
   display: grid;
   place-items: center;
-  font-size: 14px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
-.brandText {
+
+/* Título: "Antônio Rafael" + "Portfólio" */
+.title {
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
   color: #eaf3ff;
+  line-height: 1.05;
+}
+.title strong {
   font-weight: 800;
   font-size: clamp(12px, 2.8vw, 14px);
   letter-spacing: 0.2px;
-  line-height: 1.05;
-  white-space: nowrap; /* fica em 1 linha no desktop */
-}
-.brandName {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 48vw; /* evita empurrar os chips no mobile */
 }
-.brandDivider {
-  width: 0.25ch;
-}
-.brandSuffix {
+.title span {
   opacity: 0.92;
+  font-weight: 700;
+  font-size: clamp(11px, 2.4vw, 13px);
+  white-space: nowrap;
 }
 
-/* Chips (tabs) com o mesmo look de antes */
+/* Abas (chips) à direita */
 .tabs {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: clamp(6px, 2.4vw, 12px);
-  overflow: visible;
+  flex-wrap: nowrap;
+  overflow-x: auto; /* no mobile vira carrossel horizontal */
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+  max-width: 100%;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
+/* Chip com o visual original, responsivo via clamp */
 .tab {
+  appearance: none;
+  border: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -101,12 +118,14 @@
     0 4px 10px rgba(0, 0, 0, 0.18);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
+  cursor: pointer;
 }
 .tab:active {
   transform: translateY(1px);
 }
-.tab[aria-current="page"],
-.tab:hover {
+
+/* Estado ativo (vindo da prop) */
+.active {
   background: linear-gradient(
       180deg,
       rgba(168, 219, 255, 0.18),
@@ -116,40 +135,34 @@
   border-color: rgba(168, 219, 255, 0.45);
 }
 
-/* Mobile: não “desconfigura” a marca; esconde “Portfólio” e libera espaço com carrossel dos chips */
+/* “Friso”/fita decorativa abaixo do header */
+.ribbon {
+  height: 6px;
+  width: 52px;
+  margin: 0 auto;
+  transform: translateY(-2px);
+  border-radius: 8px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.08)
+    ),
+    linear-gradient(90deg, rgba(120, 232, 255, 0.35), rgba(182, 197, 255, 0.35));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* Mobile: protege a marca, não “desconfigura” e mantém chips bonitos */
 @media (max-width: 600px) {
-  .row {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  /* Marca: permite quebra e esconde o sufixo para caber sem deformar */
-  .brandText {
-    white-space: normal; /* deixa quebrar se necessário */
-    display: inline-flex;
-    flex-wrap: nowrap;
-    max-width: 100%;
-  }
-  .brandSuffix {
-    display: none;
-  } /* esconde “Portfólio” no mobile */
-  .brandDivider {
-    display: none;
-  }
-
-  /* Chips: carrossel horizontal para manter o mesmo visual sem espremê-los */
-  .tabs {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    padding-bottom: 2px;
+  .bar {
     gap: 8px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-  .tabs::-webkit-scrollbar {
+  .title strong {
+    max-width: 44vw;
+  }
+  .title span {
     display: none;
-  }
-
+  } /* esconde “Portfólio” para ganhar espaço */
   .tab {
     font-size: clamp(12px, 3.4vw, 13.5px);
     padding: 6px clamp(10px, 3.6vw, 14px);
@@ -158,10 +171,13 @@
 
 /* Telas muito estreitas */
 @media (max-width: 380px) {
-  .brandLogo {
+  .logo {
     width: 26px;
     height: 26px;
     font-size: 13px;
+  }
+  .title strong {
+    max-width: 42vw;
   }
   .tab {
     font-size: 12px;

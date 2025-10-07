@@ -35,11 +35,14 @@
 }
 .card:hover,
 .card:focus-visible {
-  transform: translateY(-6px); /* ajuste para -4px se preferir */
+  transform: translateY(
+    -6px
+  ); /* ajuste para -4px se preferir menos movimento */
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
   border-color: rgba(168, 219, 255, 0.55);
   outline: none;
 }
+
 .head {
   display: flex;
   align-items: baseline;
@@ -70,7 +73,7 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  z-index: -1; /* atrás do card pra não cobrir a borda */
+  z-index: -1; /* atrás do card pra não cobrir a borda ao subir */
   mask-image: radial-gradient(120% 120% at 50% 20%, #000 60%, transparent 100%);
   opacity: 0.65;
 }
