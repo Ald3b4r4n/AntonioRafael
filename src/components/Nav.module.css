@@ -112,25 +112,24 @@
   border-color: rgba(168, 219, 255, 0.45);
 }
 
-/* Botão hambúrguer (aparece só no mobile) */
+/* Botão “Menu” (aparece só no mobile) */
 .menuBtn {
   margin-left: auto;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
   display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-}
-.menuBtn span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  border-radius: 2px;
-  background: #eaf3ff;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    ),
+    rgba(255, 255, 255, 0.06);
+  color: #eef6ff;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+  padding: 8px 14px;
+  border-radius: 999px;
 }
 @media (max-width: 720px) {
   .tabs {
@@ -147,7 +146,7 @@
   }
 }
 
-/* Fita decorativa com “início de corda” */
+/* Ribbon decorativa — sem a “pontinha de corda” para não conflitar com o ceiling do badge */
 .ribbon {
   height: 6px;
   width: 52px;
@@ -165,27 +164,8 @@
   position: relative;
 }
 .ribbon::after {
-  /* pequeno trecho de “corda” nascido do header para dar continuidade visual */
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, 0);
-  width: 14px;
-  height: 18px;
-  border-radius: 8px;
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.03)
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.18) 0 2px,
-      transparent 2px 6px
-    );
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.35);
-}
+  display: none;
+} /* removemos o trecho de “corda” do header */
 
 /* Painel mobile + backdrop */
 .backdrop {

@@ -5,7 +5,7 @@ export default function Nav({ activeTab, setActiveTab }) {
   const [open, setOpen] = useState(false);
   const headerRef = useRef(null);
 
-  // Atualiza --nav-h com a altura real do header (impacta o crachá)
+  // Atualiza --nav-h com a altura real do header (impacta seções que usam var(--nav-h))
   useEffect(() => {
     const update = () => {
       const h = headerRef.current?.offsetHeight || 72;
@@ -76,7 +76,7 @@ export default function Nav({ activeTab, setActiveTab }) {
             </button>
           </nav>
 
-          {/* Botão hambúrguer (mobile) */}
+          {/* Botão “Menu” (mobile) */}
           <button
             className={styles.menuBtn}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
@@ -84,13 +84,11 @@ export default function Nav({ activeTab, setActiveTab }) {
             aria-controls="mobile-menu"
             onClick={() => setOpen((o) => !o)}
           >
-            <span aria-hidden="true" />
-            <span aria-hidden="true" />
-            <span aria-hidden="true" />
+            Menu
           </button>
         </div>
 
-        {/* Fita decorativa com “início da corda” para o crachá “sair do header” */}
+        {/* Ribbon decorativa (sem a “pontinha da corda” agora) */}
         <div className={styles.ribbon} />
       </header>
 
