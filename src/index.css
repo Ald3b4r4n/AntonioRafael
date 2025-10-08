@@ -28,6 +28,7 @@
   box-sizing: border-box;
 }
 
+/* Evita qualquer overflow horizontal visual */
 html,
 body,
 #root {
@@ -40,15 +41,35 @@ body {
   background: var(--navy-800);
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  overflow-x: hidden;
+  /* clip evita “pintar” fora da viewport sem criar barra de rolagem */
+  overflow-x: clip;
 }
 
-/* UTILITÁRIOS GLOBAIS (fix: agora as páginas podem usar sem importar módulos) */
+/* Quebra segura e hifenização onde possível */
+:where(h1, h2, h3, h4, p, li, blockquote) {
+  overflow-wrap: anywhere; /* quebra mesmo palavras longas */
+  word-break: normal;
+  hyphens: auto;
+}
+
+/* Mídia nunca estoura a largura */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* UTILITÁRIOS GLOBAIS */
 .container {
   width: 100%;
   max-width: var(--container);
-  margin: 0 auto;
-  padding: 24px clamp(16px, 3vw, 32px);
+  margin-inline: auto;
+  padding: 24px clamp(16px, 3.5vw, 32px);
+  /* protege de filhos que tentem extravasar */
+  overflow: clip;
 }
 
 .section {
@@ -58,7 +79,7 @@ body {
   padding-block: clamp(12px, 3vh, 48px);
 }
 
-/* Scrollbar */
+/* Scrollbar (WebKit) */
 ::-webkit-scrollbar {
   width: 10px;
 }

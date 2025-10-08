@@ -3,12 +3,16 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(18px, 4vw, 48px);
   align-items: center;
+  /* permite que os filhos encolham corretamente sem “empurrar” a largura */
+  min-width: 0;
 }
 
 .left {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* importantíssimo em grid: deixa o conteúdo quebrar em vez de estourar */
+  min-width: 0;
 }
 
 .pill {
@@ -35,11 +39,15 @@
 .title {
   margin: 6px 0 0 0;
   font-family: "Outfit", sans-serif;
-  font-size: clamp(28px, 6vw, 64px);
+  /* reduz o mínimo no mobile e deixa mais fluido */
+  font-size: clamp(24px, 7.2vw, 64px);
   font-weight: 900;
-  letter-spacing: 1px;
-  line-height: 1.02;
+  letter-spacing: 0.8px;
+  line-height: 1.04;
   text-shadow: 0 8px 28px rgba(120, 232, 255, 0.35);
+  /* ajuda a equilibrar quebras em títulos longos */
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 .title span {
   color: #0b1f2f;
@@ -51,15 +59,19 @@
 .subtitle {
   margin-top: 6px;
   font-weight: 800;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.1px;
   color: var(--neon-2);
   text-transform: uppercase;
+  /* evita “explodir” em telas muito estreitas */
+  font-size: clamp(12px, 2.8vw, 14px);
 }
 
 .lead {
   color: #d7e3ef;
   line-height: 1.7;
-  max-width: 60ch;
+  /* 60ch + limite de largura da viewport para nunca passar */
+  max-width: min(60ch, 100%);
+  overflow-wrap: anywhere;
 }
 
 .chips {
@@ -67,6 +79,8 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 8px;
+  /* impede overflow horizontal quando muitas tags */
+  min-width: 0;
 }
 .chips span {
   padding: 8px 12px;
@@ -82,6 +96,8 @@
   display: flex;
   gap: 14px;
   margin-top: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .social a {
   color: var(--neon);
@@ -96,6 +112,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  /* crucial para o grid não “estourar” com o crachá */
+  min-width: 0;
 }
 
 @media (max-width: 980px) {
@@ -104,5 +122,9 @@
   }
   .right {
     order: -1;
+  }
+  /* título um pouco menor em telas intermediárias */
+  .title {
+    font-size: clamp(22px, 7.8vw, 48px);
   }
 }

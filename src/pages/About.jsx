@@ -26,8 +26,8 @@ export default function About() {
         <div className={styles.hero}>
           <div className={styles.left}>
             <div className={styles.pill}>
-              <span className={styles.dot} /> Foco, calma e precisão — manhã de
-              chuva
+              <span className={styles.dot} /> O trabalho duro supera o talento,
+              quando o talento não trabalha duro!
             </div>
             <h1 className={styles.title}>
               BEM-VINDO AO MEU <span>PORTFÓLIO</span>
