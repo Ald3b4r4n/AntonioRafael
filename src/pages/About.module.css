@@ -3,23 +3,24 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(18px, 4vw, 48px);
   align-items: center;
-  /* permite que os filhos encolham corretamente sem “empurrar” a largura */
-  min-width: 0;
+  min-width: 0; /* evita “explodir” largura no grid */
 }
 
 .left {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  /* importantíssimo em grid: deixa o conteúdo quebrar em vez de estourar */
-  min-width: 0;
+  min-width: 0; /* permite quebra correta do conteúdo */
 }
 
+/* PILL (frase) */
 .pill {
+  /* Antes era inline-flex + width:max-content — podia causar overflow
+     Mantemos flex mas liberamos quebra e limitamos largura */
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start; /* alinha o ponto ao topo do texto */
   gap: 8px;
-  width: max-content;
+  max-width: min(62ch, 100%); /* largura confortável e responsiva */
   padding: 8px 12px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
@@ -28,26 +29,42 @@
   color: var(--muted);
   backdrop-filter: blur(8px);
 }
+
 .dot {
   width: 8px;
   height: 8px;
+  margin-top: 3px; /* leve ajuste vertical ao topo do texto */
   border-radius: 50%;
   background: var(--neon);
   box-shadow: 0 0 14px var(--neon);
+  flex: 0 0 8px;
+}
+
+/* Texto do pill com justificativa fluida (evita “buracos” no mobile muito estreito) */
+.pillText {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-wrap: pretty;
+  text-align: left; /* mobile muito estreito */
+}
+@media (min-width: 420px) {
+  .pillText {
+    text-align: justify; /* justificar onde há espaço suficiente */
+    text-justify: inter-word;
+  }
 }
 
 .title {
   margin: 6px 0 0 0;
   font-family: "Outfit", sans-serif;
-  /* reduz o mínimo no mobile e deixa mais fluido */
-  font-size: clamp(24px, 7.2vw, 64px);
+  font-size: clamp(24px, 7.2vw, 64px); /* um pouco mais fluido no mobile */
   font-weight: 900;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
   line-height: 1.04;
   text-shadow: 0 8px 28px rgba(120, 232, 255, 0.35);
-  /* ajuda a equilibrar quebras em títulos longos */
   text-wrap: balance;
-  overflow-wrap: anywhere;
 }
 .title span {
   color: #0b1f2f;
@@ -62,16 +79,21 @@
   letter-spacing: 1.1px;
   color: var(--neon-2);
   text-transform: uppercase;
-  /* evita “explodir” em telas muito estreitas */
   font-size: clamp(12px, 2.8vw, 14px);
 }
 
 .lead {
   color: #d7e3ef;
   line-height: 1.7;
-  /* 60ch + limite de largura da viewport para nunca passar */
   max-width: min(60ch, 100%);
   overflow-wrap: anywhere;
+}
+/* Parágrafo justificado em telas a partir de 480px */
+@media (min-width: 480px) {
+  .lead {
+    text-align: justify;
+    text-justify: inter-word;
+  }
 }
 
 .chips {
@@ -79,7 +101,6 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 8px;
-  /* impede overflow horizontal quando muitas tags */
   min-width: 0;
 }
 .chips span {
@@ -90,6 +111,27 @@
   border: 1px solid var(--stroke);
   background: var(--glass);
   color: #e6f2ff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease, background 0.15s ease;
+  cursor: default;
+}
+/* Hover/focus para desktop e acessibilidade */
+.chips span:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+  border-color: rgba(168, 219, 255, 0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(168, 219, 255, 0.14),
+    rgba(255, 255, 255, 0.06)
+  );
+}
+.chips span:active {
+  transform: translateY(-1px);
+}
+.chips span:focus-visible {
+  outline: 2px solid var(--neon);
+  outline-offset: 2px;
 }
 
 .social {
@@ -112,7 +154,6 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  /* crucial para o grid não “estourar” com o crachá */
   min-width: 0;
 }
 
@@ -122,9 +163,5 @@
   }
   .right {
     order: -1;
-  }
-  /* título um pouco menor em telas intermediárias */
-  .title {
-    font-size: clamp(22px, 7.8vw, 48px);
   }
 }

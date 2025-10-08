@@ -26,13 +26,18 @@ export default function About() {
         <div className={styles.hero}>
           <div className={styles.left}>
             <div className={styles.pill}>
-              <span className={styles.dot} /> O trabalho duro supera o talento,
-              quando o talento não trabalha duro!
+              <span className={styles.dot} aria-hidden="true" />
+              <span className={styles.pillText}>
+                O trabalho duro supera o talento, quando o talento não trabalha
+                duro!
+              </span>
             </div>
+
             <h1 className={styles.title}>
               BEM-VINDO AO MEU <span>PORTFÓLIO</span>
             </h1>
             <h2 className={styles.subtitle}>Desenvolvedor Full Stack</h2>
+
             <p className={styles.lead}>
               Olá! Sou Antônio Rafael Souza Cruz de Noronha, estudante de
               Engenharia de Software, conhecimento consolidado em
@@ -44,6 +49,7 @@ export default function About() {
               disciplina, responsabilidade e trabalho em equipe. Sou casado e
               pai, sempre em busca de evolução pessoal e profissional.
             </p>
+
             <div className={styles.chips}>
               <span>React</span>
               <span>JavaScript</span>
@@ -52,6 +58,7 @@ export default function About() {
               <span>MongoDB</span>
               <span>Supabase</span>
             </div>
+
             <div className={styles.social}>
               <a
                 href="https://github.com/Ald3b4r4n"
@@ -76,6 +83,7 @@ export default function About() {
               </a>
             </div>
           </div>
+
           <div className={styles.right}>
             <LanyardBadge />
           </div>
