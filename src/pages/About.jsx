@@ -16,7 +16,7 @@ export default function About() {
           jobTitle: "Full Stack Developer",
           url: "https://seu-dominio.com/",
           sameAs: [
-            "https://www.linkedin.com/in/seu-perfil",
+            "https://www.linkedin.com/in/antonio-rafael-souza-cruz-de-noronha-249539111/",
             "https://github.com/Ald3b4r4n",
             "https://wa.me/5561982887294",
           ],
