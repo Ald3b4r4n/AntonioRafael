@@ -79,7 +79,7 @@ export default function LanyardBadge() {
               RAFAEL
             </div>
             <div className={styles.role}>Full Stack Developer</div>
-            <div className={styles.meta}>PM - Goiás</div>
+            <div className={styles.meta}>A&R Software Development</div>
           </div>
           <div className={styles.gloss} />
         </motion.div>

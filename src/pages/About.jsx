@@ -44,10 +44,10 @@ export default function About() {
               desenvolvimento web, com ênfase em React, JavaScript e CSS e suas
               variações (Sass, Styled Components, Tailwind CSS), além de
               trabalhar com bancos de dados relacionais (SQL, Supabase, Neon) e
-              não relacionais (Firebase, MongoDB). Atuo como policial militar do
-              Estado de Goiás desde 2017, trazendo dessa jornada valores como
-              disciplina, responsabilidade e trabalho em equipe. Sou casado e
-              pai, sempre em busca de evolução pessoal e profissional.
+              não relacionais (Firebase, MongoDB). Trago de minha jornada
+              valores como disciplina, responsabilidade e trabalho em equipe.
+              Sou casado e pai, sempre em busca de evolução pessoal e
+              profissional.
             </p>
 
             <div className={styles.chips}>
