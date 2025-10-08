@@ -1,17 +1,17 @@
-/* Header fixo com blur */
+/* Header fixo */
 .header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
-  z-index: 80;
+  z-index: 100;
   width: 100%;
   background: linear-gradient(
     180deg,
-    rgba(8, 16, 28, 0.55),
-    rgba(8, 16, 28, 0.25)
+    rgba(8, 16, 28, 0.85),
+    rgba(8, 16, 28, 0.65)
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bar {
@@ -20,11 +20,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 6px clamp(8px, 3vw, 16px);
-  min-height: 48px;
+  padding: 8px clamp(8px, 3vw, 16px);
+  min-height: 52px;
 }
 
-/* Marca */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -66,7 +65,6 @@
   white-space: nowrap;
 }
 
-/* Tabs do desktop */
 .tabs {
   margin-left: auto;
   display: flex;
@@ -112,7 +110,6 @@
   border-color: rgba(168, 219, 255, 0.45);
 }
 
-/* Botão “Menu” (aparece só no mobile) */
 .menuBtn {
   margin-left: auto;
   display: none;
@@ -146,32 +143,23 @@
   }
 }
 
-/* Ribbon decorativa — sem a “pontinha de corda” para não conflitar com o ceiling do badge */
-.ribbon {
-  height: 6px;
-  width: 52px;
-  margin: 0 auto;
-  transform: translateY(-2px);
-  border-radius: 8px;
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.25),
-      rgba(255, 255, 255, 0.08)
-    ),
-    linear-gradient(90deg, rgba(120, 232, 255, 0.35), rgba(182, 197, 255, 0.35));
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  position: relative;
+/* Ponto de conexão direto no header */
+.connectionPoint {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: linear-gradient(180deg, var(--neon), var(--neon-2));
+  border-radius: 0 0 2px 2px;
+  z-index: 101;
 }
-.ribbon::after {
-  display: none;
-} /* removemos o trecho de “corda” do header */
 
-/* Painel mobile + backdrop */
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 90;
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   pointer-events: none;
@@ -184,7 +172,7 @@
 
 .mobilePanel {
   position: fixed;
-  z-index: 75;
+  z-index: 95;
   top: var(--nav-h);
   left: 0;
   right: 0;
