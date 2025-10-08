@@ -123,7 +123,7 @@ export default function Contact() {
               WhatsApp
             </a>
             <a
-              href="https://linkedin.com/in/seu-perfil"
+              href="https://www.linkedin.com/in/antonio-rafael-souza-cruz-de-noronha-249539111/"
               target="_blank"
               rel="noreferrer"
             >
