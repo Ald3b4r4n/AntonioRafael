@@ -1,8 +1,8 @@
-/* Header fixo com fundo translúcido e blur */
+/* Header fixo com blur */
 .header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
-  z-index: 50;
+  z-index: 80;
   width: 100%;
   background: linear-gradient(
     180deg,
@@ -14,7 +14,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Barra interna (conteúdo) */
 .bar {
   max-width: 1120px;
   margin: 0 auto;
@@ -22,19 +21,16 @@
   align-items: center;
   gap: 12px;
   padding: 6px clamp(8px, 3vw, 16px);
-  min-height: 44px;
+  min-height: 48px;
 }
 
-/* Marca à esquerda */
+/* Marca */
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-width: 0; /* permite truncar o título long */
-  text-decoration: none;
+  min-width: 0;
 }
-
-/* Bolinha "AR" */
 .logo {
   width: 28px;
   height: 28px;
@@ -48,24 +44,20 @@
   place-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
-
-/* Título: "Antônio Rafael" + "Portfólio" */
 .title {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
   min-width: 0;
   color: #eaf3ff;
-  line-height: 1.05;
 }
 .title strong {
   font-weight: 800;
   font-size: clamp(12px, 2.8vw, 14px);
-  letter-spacing: 0.2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 48vw; /* evita empurrar os chips no mobile */
+  max-width: 48vw;
 }
 .title span {
   opacity: 0.92;
@@ -74,28 +66,17 @@
   white-space: nowrap;
 }
 
-/* Abas (chips) à direita */
+/* Tabs do desktop */
 .tabs {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: clamp(6px, 2.4vw, 12px);
-  flex-wrap: nowrap;
-  overflow-x: auto; /* no mobile vira carrossel horizontal */
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 2px 0;
-  max-width: 100%;
 }
-.tabs::-webkit-scrollbar {
-  display: none;
-}
-
-/* Chip com o visual original, responsivo via clamp */
 .tab {
   appearance: none;
   border: 0;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -109,7 +90,6 @@
     ),
     rgba(255, 255, 255, 0.06);
   color: #eef6ff;
-  text-decoration: none;
   font-weight: 800;
   font-size: clamp(12px, 3.1vw, 14px);
   line-height: 1;
@@ -118,13 +98,10 @@
     0 4px 10px rgba(0, 0, 0, 0.18);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
-  cursor: pointer;
 }
 .tab:active {
   transform: translateY(1px);
 }
-
-/* Estado ativo (vindo da prop) */
 .active {
   background: linear-gradient(
       180deg,
@@ -135,7 +112,42 @@
   border-color: rgba(168, 219, 255, 0.45);
 }
 
-/* “Friso”/fita decorativa abaixo do header */
+/* Botão hambúrguer (aparece só no mobile) */
+.menuBtn {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.menuBtn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: #eaf3ff;
+}
+@media (max-width: 720px) {
+  .tabs {
+    display: none;
+  }
+  .menuBtn {
+    display: inline-flex;
+  }
+  .title strong {
+    max-width: 44vw;
+  }
+  .title span {
+    display: none;
+  }
+}
+
+/* Fita decorativa com “início de corda” */
 .ribbon {
   height: 6px;
   width: 52px;
@@ -150,37 +162,92 @@
     linear-gradient(90deg, rgba(120, 232, 255, 0.35), rgba(182, 197, 255, 0.35));
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.22);
+  position: relative;
+}
+.ribbon::after {
+  /* pequeno trecho de “corda” nascido do header para dar continuidade visual */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 0);
+  width: 14px;
+  height: 18px;
+  border-radius: 8px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.03)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.18) 0 2px,
+      transparent 2px 6px
+    );
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.35);
 }
 
-/* Mobile: protege a marca, não “desconfigura” e mantém chips bonitos */
-@media (max-width: 600px) {
-  .bar {
-    gap: 8px;
-  }
-  .title strong {
-    max-width: 44vw;
-  }
-  .title span {
-    display: none;
-  } /* esconde “Portfólio” para ganhar espaço */
-  .tab {
-    font-size: clamp(12px, 3.4vw, 13.5px);
-    padding: 6px clamp(10px, 3.6vw, 14px);
-  }
+/* Painel mobile + backdrop */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Telas muito estreitas */
-@media (max-width: 380px) {
-  .logo {
-    width: 26px;
-    height: 26px;
-    font-size: 13px;
-  }
-  .title strong {
-    max-width: 42vw;
-  }
-  .tab {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
+.mobilePanel {
+  position: fixed;
+  z-index: 75;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 24, 38, 0.95),
+    rgba(12, 24, 38, 0.88)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  display: grid;
+  gap: 8px;
+  padding: 10px clamp(12px, 4vw, 18px) 14px;
+}
+.mobilePanel.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobileItem {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eef6ff;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: left;
+}
+.mobileItem.active {
+  background: linear-gradient(
+      180deg,
+      rgba(168, 219, 255, 0.18),
+      rgba(168, 219, 255, 0.08)
+    ),
+    rgba(255, 255, 255, 0.08);
+  border-color: rgba(168, 219, 255, 0.45);
 }
