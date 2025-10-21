@@ -7,6 +7,7 @@ export default function LanyardBadge() {
   const isInteractingRef = useRef(false);
   const stageRef = useRef(null);
   const cordRef = useRef(null);
+  const loggedRef = useRef(false);
   const sMaxRef = useRef(140);
 
   // Física (refs para estado contínuo)
@@ -110,9 +111,20 @@ export default function LanyardBadge() {
     try {
       const root = document.documentElement;
       root.setAttribute("data-lanyard-active", "true");
-      // Garante z-index alto e visibilidade durante a interação
-      root.style.setProperty("--lanyard-z", "9999");
+      // Garante z-index acima do conteúdo (mas abaixo do header)
+      root.style.setProperty("--lanyard-z", "99");
       root.style.setProperty("--lanyard-opacity", "1");
+    } catch {
+      /* ignore */
+    }
+    // Easter egg de console
+    try {
+      if (!loggedRef.current) {
+        // Loga apenas uma vez para não poluir o console
+        // Log amigável no console durante a primeira interação
+        console.log("hey what are you looking for???😜");
+        loggedRef.current = true;
+      }
     } catch {
       /* ignore */
     }
