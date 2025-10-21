@@ -111,18 +111,12 @@ export default function LanyardBadge() {
     try {
       const root = document.documentElement;
       root.setAttribute("data-lanyard-active", "true");
-      // Garante z-index acima do conteúdo (mas abaixo do header)
-      root.style.setProperty("--lanyard-z", "99");
+      // Garante visibilidade durante a interação
       root.style.setProperty("--lanyard-opacity", "1");
     } catch {
       /* ignore */
     }
-    // Marca o palco como ativo (no mobile vira position: fixed)
-    try {
-      stageRef.current?.setAttribute("data-active", "true");
-    } catch {
-      /* ignore */
-    }
+    // Não ativa overlay ainda — só quando realmente esticar (feito no onPan)
     // Easter egg de console
     try {
       if (!loggedRef.current) {
@@ -175,6 +169,24 @@ export default function LanyardBadge() {
     // aplica
     controls.set({ rotate: angleDeg });
     stageRef.current?.style.setProperty("--stretch", `${Math.round(s)}px`);
+
+    // Ativa posição fixa e z-index apenas quando o alongamento passar do limiar
+    try {
+      const root = document.documentElement;
+      const shouldOverlay = s > 24; // px de alongamento antes de sobrepor conteúdo
+      if (shouldOverlay) {
+        stageRef.current?.setAttribute("data-active", "true");
+        root.style.setProperty("--lanyard-z", "99"); // abaixo do header (100)
+        root.style.setProperty("--lanyard-opacity", "1");
+      } else {
+        stageRef.current?.removeAttribute("data-active");
+        if (!root.hasAttribute("data-menu-open")) {
+          root.style.removeProperty("--lanyard-z");
+        }
+      }
+    } catch {
+      /* ignore */
+    }
   };
 
   const onPanEnd = async () => {
