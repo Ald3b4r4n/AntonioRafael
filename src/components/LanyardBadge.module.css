@@ -13,7 +13,8 @@
   position: fixed;
   top: var(--nav-h, 72px);
   left: 0;
-  z-index: 95; /* abaixo do Nav (100) mas acima do conteúdo */
+  /* Controlado por CSS var para permitir ajuste quando o menu abrir */
+  z-index: var(--lanyard-z, 95); /* abaixo do Nav (100) mas acima do conteúdo */
   width: 100%;
   pointer-events: none; /* permite clicar "através" do stage */
 
@@ -30,12 +31,6 @@
   contain: layout paint;
   isolation: isolate;
   overflow: visible;
-}
-
-/* Quando o menu mobile estiver aberto, mantenha o crachá acima do painel
-   mas sem bloquear cliques do menu (pointer-events no .card serão desativados) */
-:global(:root[data-menu-open="true"]) .stage {
-  z-index: 120;
 }
 
 /* Barra (ceiling) — CENTRAL e colada ao topo do palco */
@@ -163,7 +158,8 @@
   backface-visibility: hidden;
   container-type: inline-size;
   container-name: badge;
-  pointer-events: auto; /* permite interagir com o cartão */
+  /* Controla interação via CSS var para permitir desabilitar com o menu aberto */
+  pointer-events: var(--lanyard-pe, auto); /* permite interagir com o cartão */
   /* Evita que o gesto de arrastar dispare scroll/refresh do navegador no mobile */
   touch-action: none;
   -ms-touch-action: none;
@@ -261,10 +257,7 @@
   pointer-events: none;
 }
 
-/* Com o menu aberto, desabilita interação no cartão para não bloquear os itens do menu */
-:global(:root[data-menu-open="true"]) .stage .card {
-  pointer-events: none;
-}
+/* Interação do cartão será desabilitada via --lanyard-pe definida no :root pelo Nav */
 
 /* MOBILE (≤ 720px): mostrar com barra própria no topo, sem sobrepor conteúdo */
 @media (max-width: 720px) {
@@ -284,6 +277,8 @@
     );
     justify-content: center;
     padding-right: 0;
+    /* Eleva o crachá acima do conteúdo em mobile por padrão; pode ser sobrescrito via var */
+    z-index: var(--lanyard-z, 200);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
   }

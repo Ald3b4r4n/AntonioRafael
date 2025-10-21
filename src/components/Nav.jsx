@@ -28,8 +28,14 @@ export default function Nav({ activeTab, setActiveTab }) {
     const root = document.documentElement;
     if (open) {
       root.setAttribute("data-menu-open", "true");
+      // eleva o crachá acima do menu e desabilita interação do cartão
+      root.style.setProperty("--lanyard-z", "300");
+      root.style.setProperty("--lanyard-pe", "none");
     } else {
       root.removeAttribute("data-menu-open");
+      // restaura valores padrão
+      root.style.removeProperty("--lanyard-z");
+      root.style.removeProperty("--lanyard-pe");
     }
     return () => root.removeAttribute("data-menu-open");
   }, [open]);
