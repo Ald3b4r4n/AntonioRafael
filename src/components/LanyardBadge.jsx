@@ -117,6 +117,12 @@ export default function LanyardBadge() {
     } catch {
       /* ignore */
     }
+    // Marca o palco como ativo (no mobile vira position: fixed)
+    try {
+      stageRef.current?.setAttribute("data-active", "true");
+    } catch {
+      /* ignore */
+    }
     // Easter egg de console
     try {
       if (!loggedRef.current) {
@@ -181,6 +187,7 @@ export default function LanyardBadge() {
         root.style.removeProperty("--lanyard-z");
         root.style.removeProperty("--lanyard-opacity");
       }
+      stageRef.current?.removeAttribute("data-active");
     } catch {
       /* ignore */
     }

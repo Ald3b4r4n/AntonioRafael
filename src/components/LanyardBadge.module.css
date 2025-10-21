@@ -283,6 +283,15 @@
     z-index: var(--lanyard-z, 90);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
+    /* Durante a interação, tornamos o palco fixo para garantir sobreposição sobre o conteúdo */
+  }
+  .stage[data-active="true"] {
+    position: fixed;
+    top: var(--nav-h, 72px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: var(--lanyard-z, 99);
   }
   .ceiling {
     display: block;
