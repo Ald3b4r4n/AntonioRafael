@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./App.module.css";
 import Nav from "./components/Nav";
 import RainCanvas from "./components/RainCanvas";
+import LanyardBadge from "./components/LanyardBadge";
 
 import About from "./pages/About";
 import Projects from "./pages/Projects";
@@ -27,6 +28,8 @@ export default function App() {
     <div className={styles.app}>
       <RainCanvas /> {/* chuva sutil */}
       <Nav activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab === "about" && <LanyardBadge />}{" "}
+      {/* crachá apenas no Sobre Mim */}
       <main className={styles.main}>{render()}</main>
     </div>
   );

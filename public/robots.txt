@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://seu-dominio.com/sitemap.xml
+# Sitemap dinâmico gerado na API, funciona no domínio atual (Vercel ou custom)
+Sitemap: /api/sitemap

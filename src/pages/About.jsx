@@ -1,5 +1,4 @@
 import styles from "./About.module.css";
-import LanyardBadge from "../components/LanyardBadge";
 import SEO from "../components/SEO";
 
 export default function About() {
@@ -34,7 +33,9 @@ export default function About() {
             </div>
 
             <h1 className={styles.title}>
-              BEM-VINDO AO MEU <span>PORTFÓLIO</span>
+              BEM-VINDO AO MEU
+              <br className={styles.titleBreak} />
+              <span>PORTFÓLIO</span>
             </h1>
             <h2 className={styles.subtitle}>Desenvolvedor Full Stack</h2>
 
@@ -82,10 +83,6 @@ export default function About() {
                 WhatsApp
               </a>
             </div>
-          </div>
-
-          <div className={styles.right}>
-            <LanyardBadge />
           </div>
         </div>
       </div>

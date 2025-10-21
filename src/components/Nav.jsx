@@ -62,6 +62,7 @@ export default function Nav({ activeTab, setActiveTab }) {
               className={`${styles.tab} ${
                 activeTab === "projects" ? styles.active : ""
               }`}
+              data-lanyard-anchor="projects"
               onClick={() => onSelect("projects")}
             >
               Projetos
@@ -87,6 +88,9 @@ export default function Nav({ activeTab, setActiveTab }) {
             Menu
           </button>
         </div>
+
+        {/* Ponto de conexão desativado (usamos o botão "Projetos" como âncora) */}
+        {/* <div className={styles.connectionPoint} aria-hidden /> */}
 
         {/* Ribbon decorativa (sem a “pontinha da corda” agora) */}
         <div className={styles.ribbon} />

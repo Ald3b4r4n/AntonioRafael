@@ -143,17 +143,9 @@
   }
 }
 
-/* Ponto de conexão direto no header */
+/* Ponto de conexão visual desativado (usamos o próprio botão como âncora) */
 .connectionPoint {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 8px;
-  background: linear-gradient(180deg, var(--neon), var(--neon-2));
-  border-radius: 0 0 2px 2px;
-  z-index: 101;
+  display: none;
 }
 
 .backdrop {

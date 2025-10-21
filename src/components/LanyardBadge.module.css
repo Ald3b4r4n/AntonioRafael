@@ -10,23 +10,25 @@
   --strap-h: clamp(120px, 14svh, 150px);
   --ceiling-h: 10px;
 
-  position: relative;
+  position: fixed;
+  top: var(--nav-h, 72px);
+  left: 0;
+  z-index: 95; /* abaixo do Nav (100) mas acima do conteúdo */
   width: 100%;
+  pointer-events: none; /* permite clicar "através" do stage */
 
   /* Altura mínima calculada (sem usar env() aqui para não descolar) */
-  min-height: calc(
+  height: calc(
     var(--ceiling-h) + var(--strap-h) + var(--ring) + var(--hook-h) + var(--gap) +
-      var(--card-h) + clamp(24px, 6dvh, 56px)
+      var(--card-h) + clamp(24px, 6dvh, 56px) + var(--stretch, 0px)
   );
 
   display: flex;
   align-items: flex-start;
   justify-content: center;
   user-select: none;
-  touch-action: none;
   contain: layout paint;
   isolation: isolate;
-  margin-bottom: clamp(28px, 8dvh, 80px);
   overflow: visible;
 }
 
@@ -53,8 +55,10 @@
 /* Pivô nasce logo abaixo do ceiling */
 .pivot {
   position: absolute;
-  top: var(--ceiling-h); /* imediatamente após a barra */
-  left: 50%;
+  top: var(--ceiling-h); /* imediatamente após a barra (mobile) */
+  left: calc(
+    50% + var(--pivot-x, 0px)
+  ); /* alinha com ponto no header em desktop */
   transform: translateX(-50%);
   width: 1px;
   height: calc(
@@ -74,7 +78,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 14px;
-  height: var(--strap-h);
+  height: calc(var(--strap-h) + var(--stretch, 0px));
   background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.1),
@@ -92,7 +96,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: var(--strap-h);
+  top: calc(var(--strap-h) + var(--stretch, 0px));
   width: var(--ring);
   height: var(--ring);
   border-radius: 50%;
@@ -109,7 +113,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(var(--strap-h) + var(--ring));
+  top: calc(var(--strap-h) + var(--ring) + var(--stretch, 0px));
   width: 26px;
   height: var(--hook-h);
   border: 3px solid rgba(210, 230, 255, 0.85);
@@ -123,7 +127,10 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateZ(0);
-  top: calc(var(--strap-h) + var(--ring) + var(--hook-h) + var(--gap));
+  top: calc(
+    var(--strap-h) + var(--ring) + var(--hook-h) + var(--gap) +
+      var(--stretch, 0px)
+  );
   width: var(--card-w);
   height: var(--card-h);
   border-radius: 18px;
@@ -150,6 +157,7 @@
   backface-visibility: hidden;
   container-type: inline-size;
   container-name: badge;
+  pointer-events: auto; /* permite interagir com o cartão */
 }
 .card:active {
   cursor: grabbing;
@@ -175,6 +183,9 @@
   border-radius: 12px;
   filter: saturate(90%);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none; /* deixa o pan do cartão capturar o gesto sem "pegar" a imagem */
 }
 
 .info {
@@ -241,21 +252,43 @@
   pointer-events: none;
 }
 
-/* MOBILE (≤ 600px) */
-@media (max-width: 600px) {
+/* MOBILE (≤ 720px): mostrar com barra própria no topo */
+@media (max-width: 720px) {
   .stage {
     --card-w: min(56vw, 224px);
     --card-h: calc(var(--card-w) * 1.22);
     --strap-h: clamp(68px, 10dvh, 96px);
 
-    min-height: calc(
+    position: fixed;
+    top: var(--nav-h, 72px);
+    left: 0;
+    transform: none;
+    width: 100%;
+    height: calc(
       var(--ceiling-h) + var(--strap-h) + var(--ring) + var(--hook-h) +
         var(--gap) + var(--card-h) + clamp(36px, 10dvh, 96px)
     );
-
-    margin-bottom: clamp(40px, 12dvh, 120px);
+    justify-content: center;
+    padding-right: 0;
   }
   .ceiling {
+    display: block;
     width: clamp(150px, 56vw, 240px);
+  }
+  .pivot {
+    top: var(--ceiling-h);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* DESKTOP (≥ 721px): esconder barra própria e grudar no Nav */
+@media (min-width: 721px) {
+  .ceiling {
+    display: none;
+  }
+  .pivot {
+    top: 0; /* nasce no topo da stage, colado no header */
+    left: calc(50% + var(--pivot-x, 0px));
   }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://seu-dominio.com/</loc></url>
-  <url><loc>https://seu-dominio.com/projetos</loc></url>
-  <url><loc>https://seu-dominio.com/contato</loc></url>
+  <!-- Este arquivo é mantido apenas como fallback. A versão oficial está em /api/sitemap e usa o domínio atual. -->
+  <url><loc>/</loc></url>
+  <url><loc>/projetos</loc></url>
+  <url><loc>/contato</loc></url>
 </urlset>
