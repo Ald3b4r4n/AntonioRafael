@@ -42,6 +42,11 @@ export default function Nav({ activeTab, setActiveTab }) {
     return () => root.removeAttribute("data-menu-open");
   }, [open]);
 
+  // Easter-egg no console
+  useEffect(() => {
+    console.log("hey what are you looking for???😜");
+  }, []);
+
   // Fecha com ESC
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpen(false);
