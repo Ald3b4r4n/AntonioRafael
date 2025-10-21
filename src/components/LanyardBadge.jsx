@@ -106,6 +106,17 @@ export default function LanyardBadge() {
     } catch {
       /* ignore */
     }
+    // Eleva z-index durante a interação para garantir que fique acima do conteúdo
+    try {
+      const root = document.documentElement;
+      root.setAttribute("data-lanyard-active", "true");
+      const current = root.style.getPropertyValue("--lanyard-z");
+      if (!current || Number(current) < 400) {
+        root.style.setProperty("--lanyard-z", "400");
+      }
+    } catch {
+      /* ignore */
+    }
     isInteractingRef.current = true;
     controls.stop();
     // interrompe laço de física se estiver rodando
@@ -151,6 +162,16 @@ export default function LanyardBadge() {
 
   const onPanEnd = async () => {
     isInteractingRef.current = false;
+    // Ao terminar, se o menu não estiver aberto, podemos restaurar o z-index padrão
+    try {
+      const root = document.documentElement;
+      root.removeAttribute("data-lanyard-active");
+      if (!root.hasAttribute("data-menu-open")) {
+        root.style.removeProperty("--lanyard-z");
+      }
+    } catch {
+      /* ignore */
+    }
     // inicia simulação física livre
     runPhysics();
   };
