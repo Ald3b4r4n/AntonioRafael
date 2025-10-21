@@ -7,7 +7,6 @@ export default function LanyardBadge() {
   const isInteractingRef = useRef(false);
   const stageRef = useRef(null);
   const cordRef = useRef(null);
-  const loggedRef = useRef(false);
   const sMaxRef = useRef(140);
 
   // Física (refs para estado contínuo)
@@ -107,27 +106,6 @@ export default function LanyardBadge() {
     } catch {
       /* ignore */
     }
-    // Eleva z-index durante a interação para garantir que fique acima do conteúdo
-    try {
-      const root = document.documentElement;
-      root.setAttribute("data-lanyard-active", "true");
-      // Garante visibilidade durante a interação
-      root.style.setProperty("--lanyard-opacity", "1");
-    } catch {
-      /* ignore */
-    }
-    // Não ativa overlay ainda — só quando realmente esticar (feito no onPan)
-    // Easter egg de console
-    try {
-      if (!loggedRef.current) {
-        // Loga apenas uma vez para não poluir o console
-        // Log amigável no console durante a primeira interação
-        console.log("hey what are you looking for???😜");
-        loggedRef.current = true;
-      }
-    } catch {
-      /* ignore */
-    }
     isInteractingRef.current = true;
     controls.stop();
     // interrompe laço de física se estiver rodando
@@ -169,40 +147,10 @@ export default function LanyardBadge() {
     // aplica
     controls.set({ rotate: angleDeg });
     stageRef.current?.style.setProperty("--stretch", `${Math.round(s)}px`);
-
-    // Ativa posição fixa e z-index apenas quando o alongamento passar do limiar
-    try {
-      const root = document.documentElement;
-      const shouldOverlay = s > 24; // px de alongamento antes de sobrepor conteúdo
-      if (shouldOverlay) {
-        stageRef.current?.setAttribute("data-active", "true");
-        root.style.setProperty("--lanyard-z", "99"); // abaixo do header (100)
-        root.style.setProperty("--lanyard-opacity", "1");
-      } else {
-        stageRef.current?.removeAttribute("data-active");
-        if (!root.hasAttribute("data-menu-open")) {
-          root.style.removeProperty("--lanyard-z");
-        }
-      }
-    } catch {
-      /* ignore */
-    }
   };
 
   const onPanEnd = async () => {
     isInteractingRef.current = false;
-    // Ao terminar, se o menu não estiver aberto, podemos restaurar o z-index padrão
-    try {
-      const root = document.documentElement;
-      root.removeAttribute("data-lanyard-active");
-      if (!root.hasAttribute("data-menu-open")) {
-        root.style.removeProperty("--lanyard-z");
-        root.style.removeProperty("--lanyard-opacity");
-      }
-      stageRef.current?.removeAttribute("data-active");
-    } catch {
-      /* ignore */
-    }
     // inicia simulação física livre
     runPhysics();
   };
