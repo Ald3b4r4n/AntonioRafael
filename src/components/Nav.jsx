@@ -23,6 +23,17 @@ export default function Nav({ activeTab, setActiveTab }) {
     };
   }, []);
 
+  // Expõe estado do menu no :root para coordenação de camadas/pointer-events
+  useEffect(() => {
+    const root = document.documentElement;
+    if (open) {
+      root.setAttribute("data-menu-open", "true");
+    } else {
+      root.removeAttribute("data-menu-open");
+    }
+    return () => root.removeAttribute("data-menu-open");
+  }, [open]);
+
   // Fecha com ESC
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpen(false);

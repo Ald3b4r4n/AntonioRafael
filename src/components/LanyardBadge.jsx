@@ -99,7 +99,13 @@ export default function LanyardBadge() {
     };
   }, []);
 
-  const onPanStart = () => {
+  const onPanStart = (e) => {
+    // Evita que o navegador interprete o gesto como scroll (especialmente mobile)
+    try {
+      e?.preventDefault?.();
+    } catch {
+      /* ignore */
+    }
     isInteractingRef.current = true;
     controls.stop();
     // interrompe laço de física se estiver rodando

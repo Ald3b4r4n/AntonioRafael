@@ -32,6 +32,12 @@
   overflow: visible;
 }
 
+/* Quando o menu mobile estiver aberto, mantenha o crachá acima do painel
+   mas sem bloquear cliques do menu (pointer-events no .card serão desativados) */
+:global(:root[data-menu-open="true"]) .stage {
+  z-index: 120;
+}
+
 /* Barra (ceiling) — CENTRAL e colada ao topo do palco */
 .ceiling {
   position: absolute;
@@ -158,6 +164,9 @@
   container-type: inline-size;
   container-name: badge;
   pointer-events: auto; /* permite interagir com o cartão */
+  /* Evita que o gesto de arrastar dispare scroll/refresh do navegador no mobile */
+  touch-action: none;
+  -ms-touch-action: none;
 }
 .card:active {
   cursor: grabbing;
@@ -252,6 +261,11 @@
   pointer-events: none;
 }
 
+/* Com o menu aberto, desabilita interação no cartão para não bloquear os itens do menu */
+:global(:root[data-menu-open="true"]) .stage .card {
+  pointer-events: none;
+}
+
 /* MOBILE (≤ 720px): mostrar com barra própria no topo, sem sobrepor conteúdo */
 @media (max-width: 720px) {
   .stage {
@@ -270,6 +284,8 @@
     );
     justify-content: center;
     padding-right: 0;
+    /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
+    overscroll-behavior: contain;
   }
   .ceiling {
     display: block;

@@ -41,6 +41,8 @@ body {
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   overflow-x: clip;
+  /* Evita pull-to-refresh/navegação por arrasto em alguns navegadores móveis */
+  overscroll-behavior-y: none;
 }
 
 :where(h1, h2, h3, h4, p, li, blockquote) {
