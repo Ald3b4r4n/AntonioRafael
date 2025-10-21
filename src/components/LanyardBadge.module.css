@@ -279,8 +279,8 @@
     );
     justify-content: center;
     padding-right: 0;
-    /* Eleva o crachá acima do conteúdo em mobile por padrão; pode ser sobrescrito via var */
-    z-index: var(--lanyard-z, 200);
+    /* Por padrão, abaixo do header (100) e acima do conteúdo; pode ser sobrescrito via var */
+    z-index: var(--lanyard-z, 90);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
   }
