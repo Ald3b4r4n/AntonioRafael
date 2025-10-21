@@ -110,10 +110,9 @@ export default function LanyardBadge() {
     try {
       const root = document.documentElement;
       root.setAttribute("data-lanyard-active", "true");
-      const current = root.style.getPropertyValue("--lanyard-z");
-      if (!current || Number(current) < 400) {
-        root.style.setProperty("--lanyard-z", "400");
-      }
+      // Garante z-index alto e visibilidade durante a interação
+      root.style.setProperty("--lanyard-z", "9999");
+      root.style.setProperty("--lanyard-opacity", "1");
     } catch {
       /* ignore */
     }
@@ -168,6 +167,7 @@ export default function LanyardBadge() {
       root.removeAttribute("data-lanyard-active");
       if (!root.hasAttribute("data-menu-open")) {
         root.style.removeProperty("--lanyard-z");
+        root.style.removeProperty("--lanyard-opacity");
       }
     } catch {
       /* ignore */

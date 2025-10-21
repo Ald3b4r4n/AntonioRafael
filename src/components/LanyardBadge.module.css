@@ -31,6 +31,8 @@
   contain: layout paint;
   isolation: isolate;
   overflow: visible;
+  opacity: var(--lanyard-opacity, 1);
+  transition: opacity 0.18s ease;
 }
 
 /* Barra (ceiling) — CENTRAL e colada ao topo do palco */

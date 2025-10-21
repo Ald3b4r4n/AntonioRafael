@@ -29,13 +29,15 @@ export default function Nav({ activeTab, setActiveTab }) {
     if (open) {
       root.setAttribute("data-menu-open", "true");
       // eleva o crachá acima do menu e desabilita interação do cartão
-      root.style.setProperty("--lanyard-z", "300");
+      root.style.setProperty("--lanyard-z", "9999");
       root.style.setProperty("--lanyard-pe", "none");
+      root.style.setProperty("--lanyard-opacity", "0");
     } else {
       root.removeAttribute("data-menu-open");
       // restaura valores padrão
       root.style.removeProperty("--lanyard-z");
       root.style.removeProperty("--lanyard-pe");
+      root.style.removeProperty("--lanyard-opacity");
     }
     return () => root.removeAttribute("data-menu-open");
   }, [open]);
