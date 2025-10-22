@@ -202,7 +202,8 @@
   flex-direction: column;
   gap: 8px;
   padding: 8px 16px 16px 14px;
-  overflow: hidden;
+  /* permite que acentos/renderizações não sejam cortados no mobile */
+  overflow: visible;
   contain: layout paint;
 }
 .name {
@@ -210,7 +211,9 @@
   font-weight: 900;
   letter-spacing: 2px;
   font-size: clamp(18px, 2.8vw, 28px);
-  line-height: 1.05;
+  /* dá mais respiro para acentos (ex.: "Antônio") em mobile */
+  line-height: 1.12;
+  margin-top: 2px;
   color: #0b1f2f;
   background: linear-gradient(180deg, var(--neon), #ffffff);
   -webkit-background-clip: text;
@@ -222,18 +225,26 @@
 }
 .role {
   font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* permite quebrar em 2 linhas em telas estreitas */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  color: #eaf3ff;
 }
 @container badge (max-width: 280px) {
   .role {
     font-size: 12.5px;
   }
+  .name {
+    letter-spacing: 1.4px;
+  }
 }
 @container badge (max-width: 240px) {
   .role {
     font-size: 11.5px;
+  }
+  .name {
+    letter-spacing: 1.2px;
   }
 }
 .meta {
@@ -283,15 +294,6 @@
     z-index: var(--lanyard-z, 90);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
-    /* Durante a interação, tornamos o palco fixo para garantir sobreposição sobre o conteúdo */
-  }
-  .stage[data-active="true"] {
-    position: fixed;
-    top: var(--nav-h, 72px);
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: var(--lanyard-z, 99);
   }
   .ceiling {
     display: block;
