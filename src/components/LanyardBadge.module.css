@@ -234,10 +234,14 @@
   margin-top: 2px;
 }
 @container badge (max-width: 280px) {
-  .role { font-size: 12.75px; }
+  .role {
+    font-size: 12.75px;
+  }
 }
 @container badge (max-width: 240px) {
-  .role { font-size: 12px; }
+  .role {
+    font-size: 12px;
+  }
 }
 .meta {
   color: #c9d7e6;
@@ -267,9 +271,10 @@
 /* MOBILE (≤ 720px): mostrar com barra própria no topo, sem sobrepor conteúdo */
 @media (max-width: 720px) {
   .stage {
-    --card-w: min(56vw, 224px);
-    --card-h: calc(var(--card-w) * 1.22);
-    --strap-h: clamp(68px, 10dvh, 96px);
+    /* Aumenta o crachá no mobile para acomodar melhor o texto */
+    --card-w: min(64vw, 260px);
+    --card-h: calc(var(--card-w) * 1.32);
+    --strap-h: clamp(72px, 11dvh, 110px);
     /* Coloca no fluxo do documento para não cobrir o texto */
     position: relative;
     top: 0;
@@ -286,6 +291,10 @@
     z-index: var(--lanyard-z, 90);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
+  }
+  /* Dá um pouco mais de área útil para o texto sem alterar o visual geral */
+  .card {
+    grid-template-columns: 20% 1fr;
   }
   .ceiling {
     display: block;
