@@ -13,9 +13,9 @@ const PROJECTS = [
     desc: "Gerador de assinaturas manuscritas para e-mails e documentos.",
   },
   {
-    title: "SmartDriver (mobile)",
-    url: "https://ald3b4r4n.github.io/xmartdriver-/",
-    desc: "Corridas com recibo digital, rota e integração WhatsApp.",
+    title: "GuardScale",
+    url: "https://guardscale.vercel.app/",
+    desc: "Plataforma web para gestão de agentes, turnos e escalas, com relatórios e exportação em PDF. Inclui autenticação JWT, modo escuro, interface responsiva e atualização em tempo real via Socket.IO. Desenvolvido em Node.js, MongoDB e Tailwind CSS.",
   },
   {
     title: "AC4-Manager",
