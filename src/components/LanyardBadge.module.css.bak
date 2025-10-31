@@ -1,3 +1,4 @@
+/* Backup original do LanyardBadge.module.css antes dos ajustes de 31/10/2025 */
 /* Palco do crachá */
 .stage {
   /* Variáveis compartilhadas */
@@ -5,10 +6,8 @@
   --hook-h: 26px;
   --gap: 12px;
 
-  /* Base desktop: mais estável em diferentes resoluções/alturas */
-  --card-w: clamp(260px, min(20vw, 32vh), 360px);
-  /* Altura atrelada à largura para evitar corte em qualquer desktop */
-  --card-h: calc(var(--card-w) * 1.32);
+  --card-w: clamp(200px, 26svh, 300px);
+  --card-h: clamp(260px, 38svh, 380px);
   --strap-h: clamp(120px, 14svh, 150px);
   --ceiling-h: 10px;
 
@@ -187,7 +186,7 @@
   padding: 12px;
 }
 .photoArea img {
-  width: 84%;
+  width: 88%;
   height: auto;
   border-radius: 12px;
   filter: saturate(90%);
@@ -203,7 +202,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 16px 12px 14px;
+  padding: 8px 16px 16px 14px;
   /* evita corte de acentos, mas não estoura layout */
   overflow: visible;
   contain: layout paint;
@@ -222,10 +221,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 8px 30px rgba(120, 232, 255, 0.35);
   max-width: 100%;
-  /* Quebra natural: evita fragmentação de palavras no desktop */
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .role {
   /* garante legibilidade e quebra em telas estreitas */
@@ -252,9 +249,8 @@
   font-weight: 600;
   opacity: 0.9;
   max-width: 100%;
-  /* Mantém quebra apenas quando necessário, sem cortar palavras */
-  overflow-wrap: break-word;
-  word-break: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .gloss {
@@ -321,23 +317,4 @@
     top: 0; /* nasce no topo da stage, colado no header */
     left: calc(50% + var(--pivot-x, 0px));
   }
-}
-
-/* DESKTOP médio (≥ 1366px): ajustar grid e tipografia, mantendo largura adaptativa */
-@media (min-width: 1366px) {
-  .stage { --card-h: calc(var(--card-w) * 1.32); }
-  .card { grid-template-columns: 18% 1fr; }
-  .name { letter-spacing: 1.6px; font-size: clamp(18px, 2.4vw, 30px); }
-}
-
-/* DESKTOP grande (≥ 1600px): suavizar espaçamento, mantendo largura adaptativa */
-@media (min-width: 1600px) {
-  .stage { --card-w: clamp(300px, 16vw, 400px); --card-h: calc(var(--card-w) * 1.32); }
-  .name { letter-spacing: 1.4px; }
-}
-
-/* DESKTOP muito grande (≥ 1920px): usa exatamente as dimensões do backup */
-@media (min-width: 1920px) {
-  .stage { --card-w: clamp(200px, 26svh, 300px); --card-h: clamp(260px, 38svh, 380px); }
-  .name { letter-spacing: 1.2px; }
 }
