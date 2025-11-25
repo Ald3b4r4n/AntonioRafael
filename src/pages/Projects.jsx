@@ -8,9 +8,9 @@ const PROJECTS = [
     desc: "OCR para agilizar abordagens: converte documentos em texto estruturado.",
   },
   {
-    title: "Assinatura Digital",
-    url: "https://assinatura-digital-three.vercel.app/",
-    desc: "Gerador de assinaturas manuscritas para e-mails e documentos.",
+    title: "UtilityPro",
+    url: "https://utilitypro.vercel.app/",
+    desc: "Utility Pro - PWA para geração de documentos policiais Sistema cross-platform com assinaturas digitais, exportação PDF e sincronização de dados. Desenvolvido com Vite, Tailwind CSS e PWA capabilities.",
   },
   {
     title: "GuardScale",
