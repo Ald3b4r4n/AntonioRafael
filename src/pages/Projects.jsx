@@ -18,9 +18,9 @@ const PROJECTS = [
     desc: "Plataforma web para gestão de agentes, turnos e escalas, com relatórios e exportação em PDF. Inclui autenticação JWT, modo escuro, interface responsiva e atualização em tempo real via Socket.IO. Desenvolvido em Node.js, MongoDB e Tailwind CSS.",
   },
   {
-    title: "AC4-Manager",
-    url: "https://ac4manager.vercel.app/",
-    desc: "Gestão de horas extras — utilizado por batalhões da PMGO.",
+    title: "Gerador de Proativas",
+    url: "https://geradordeproativas.vercel.app/",
+    desc: "Gerador de Proativas - Otimização de documentação operacional PWA que reduz tempo de relatórios policiais de 10 para 1 minuto. Persistência offline, captura de fotos e compartilhamento nativo.",
   },
   {
     title: "Vida-Extra",
