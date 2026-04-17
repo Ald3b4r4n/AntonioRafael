@@ -1,28 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap");
-
-:root {
-  --navy-900: #0a1723;
-  --navy-800: #0f2030;
-  --navy-700: #14273b;
-  --grid-line: rgba(180, 210, 240, 0.06);
-  --grid-bold: rgba(180, 210, 240, 0.1);
-
-  --text: #eaf2fb;
-  --muted: #b9c7d8;
-
-  --neon: #78e8ff;
-  --neon-2: #b6c5ff;
-  --accent: #6fd3ff;
-
-  --stroke: rgba(255, 255, 255, 0.16);
-  --glass: rgba(255, 255, 255, 0.06);
-  --radius: 14px;
-  --nav-h: 72px;
-  --container: 1200px;
-
-  --shadow-1: 0 8px 28px rgba(0, 0, 0, 0.35);
-  --shadow-2: 0 16px 48px rgba(0, 0, 0, 0.45);
-}
+@import "./tokens/tokens.css";
 
 * {
   box-sizing: border-box;
@@ -37,9 +14,9 @@ body,
 html,
 body {
   margin: 0;
-  background: var(--navy-800);
-  color: var(--text);
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family-body);
   overflow-x: clip;
   /* Evita pull-to-refresh/navegação por arrasto em alguns navegadores móveis */
   overscroll-behavior-y: none;
@@ -49,6 +26,42 @@ body {
   overflow-wrap: anywhere;
   word-break: normal;
   hyphens: auto;
+}
+
+/* -----------------------------------------------------------------
+ * Accessible focus system (T032)
+ *
+ * Strategy:
+ *   1. Suppress the default UA outline only where we provide our own
+ *      :focus-visible treatment (never leave users without a ring).
+ *   2. Use :focus-visible (not :focus) so mouse clicks don't light up
+ *      controls — only keyboard/assistive focus does.
+ *   3. Apply via a global layer to every natively interactive element,
+ *      so new components inherit the pattern for free.
+ *   4. Driven by design tokens (--focus-ring-*), so theming/dark-mode
+ *      adjustments are a single-point edit.
+ * ---------------------------------------------------------------- */
+:where(a, button, input, select, textarea, summary, [role="button"],
+  [role="link"], [role="tab"], [tabindex]):focus {
+  outline: none;
+}
+
+:where(a, button, input, select, textarea, summary, [role="button"],
+  [role="link"], [role="tab"], [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring-shadow);
+  border-radius: var(--radius-sm);
+  transition: outline-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+/* Form fields keep their own border radius — use only the soft halo so
+ * the ring doesn't look like a doubled border around inputs. */
+:where(input, select, textarea):focus-visible {
+  outline-offset: 0;
+  box-shadow: var(--focus-ring-shadow);
+  border-radius: inherit;
 }
 
 img,
@@ -62,26 +75,57 @@ canvas {
 
 .container {
   width: 100%;
-  max-width: var(--container);
+  max-width: var(--container-max);
   margin-inline: auto;
-  padding: 24px clamp(16px, 3.5vw, 32px);
+  padding: clamp(var(--space-7), 5vh, var(--space-9)) clamp(var(--space-5), 4vw, var(--space-8));
   overflow: clip;
 }
 
 .section {
-  min-height: calc(100svh - var(--nav-h));
+  min-height: calc(100svh - var(--nav-height));
   display: flex;
   align-items: center;
-  padding-block: clamp(12px, 3vh, 48px);
+  padding-block: clamp(var(--space-7), 5vh, var(--space-10));
+}
+
+/* -----------------------------------------------------------------
+ * Reduced motion (T039)
+ *
+ * Respect users who opt into `prefers-reduced-motion: reduce` at the
+ * OS/browser level. We flatten all CSS-driven motion to a near-zero
+ * duration (0.01ms instead of 0ms so transitionend/animationend events
+ * still fire — some libraries and focus-ring logic rely on them),
+ * remove scroll-behavior smoothness, and kill iteration loops.
+ *
+ * This is a belt-and-suspenders layer that covers every component
+ * module in one pass — hover lifts, ring pulses, fade-ins, nav menu
+ * slide, GlassCard wobble, button translate-Y, etc. Component-level
+ * JS (useReducedMotion hook) handles Framer Motion and canvas-driven
+ * surfaces that CSS alone cannot reach (LanyardBadge pendulum,
+ * RainCanvas drops).
+ *
+ * Design color/opacity state changes (focus ring fade, hover color
+ * swaps) remain visible but instant — interaction clarity is
+ * preserved.
+ * ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a141f;
+  background: var(--color-scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--neon-2), var(--neon));
+  background: var(--gradient-primary);
   border-radius: 8px;
 }

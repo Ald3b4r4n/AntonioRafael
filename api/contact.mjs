@@ -1,12 +1,15 @@
 /* eslint-env node */
 /**
- * Serverless Function (Vercel, ESM)
- * Envia e-mail via Nodemailer (Gmail + App Password).
- * Variáveis no Vercel:
- * - EMAIL_USER, EMAIL_PASS, CLINICA_EMAIL (opcional)
- * - EMAIL_PORT (465 ou 587), EMAIL_SECURE ("true" ou "false")
+ * Serverless Function (Vercel, ESM) — Contact form handler v2.
+ *
+ * Middleware stack (per contracts/contact-api.md):
+ *   method check → rate limiter → body parse → sanitize → validate → send
+ *
+ * Env vars: EMAIL_USER, EMAIL_PASS, CLINICA_EMAIL (optional),
+ *           EMAIL_PORT (465), EMAIL_SECURE ("true")
  */
 import nodemailer from "nodemailer";
+import validator from "validator";
 
 const {
   EMAIL_USER,
@@ -16,16 +19,44 @@ const {
   EMAIL_SECURE = "true",
 } = process.env;
 
-// Reaproveitado entre invocações
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: Number(EMAIL_PORT),
-  secure: String(EMAIL_SECURE) === "true", // 465=true (SSL) | 587=false (STARTTLS)
+  secure: String(EMAIL_SECURE) === "true",
   auth: { user: EMAIL_USER, pass: EMAIL_PASS },
   tls: { minVersion: "TLSv1.2" },
 });
 
-// Utilitário para ler JSON do body (Vercel Node não faz parse automático)
+// ── Rate limiting (in-memory, 5 req / 10 min / IP) ──────────
+
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const rateLimitStore = new Map();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const key = ip || "unknown";
+  const timestamps = (rateLimitStore.get(key) || []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS,
+  );
+
+  if (timestamps.length >= RATE_LIMIT_MAX) {
+    rateLimitStore.set(key, timestamps);
+    return false;
+  }
+
+  timestamps.push(now);
+  rateLimitStore.set(key, timestamps);
+  return true;
+}
+
+/** Exported for test teardown only. */
+export function _resetRateLimiter() {
+  rateLimitStore.clear();
+}
+
+// ── Body parsing ─────────────────────────────────────────────
+
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
     let data = "";
@@ -41,6 +72,21 @@ function readJsonBody(req) {
   });
 }
 
+// ── Sanitization ─────────────────────────────────────────────
+
+function stripHtmlTags(str) {
+  return String(str).replace(/<[^>]*>/g, "");
+}
+
+function stripCrlf(str) {
+  return String(str).replace(/[\r\n]/g, "");
+}
+
+function sanitize(value) {
+  if (typeof value !== "string") return "";
+  return stripCrlf(stripHtmlTags(value)).trim();
+}
+
 function escapeHtml(str = "") {
   return String(str)
     .replaceAll("&", "&amp;")
@@ -50,28 +96,86 @@ function escapeHtml(str = "") {
     .replaceAll("'", "&#039;");
 }
 
+// ── Handler ──────────────────────────────────────────────────
+
 export default async function handler(req, res) {
-  // CORS não é necessário se front e API estão no mesmo domínio do Vercel.
-  // Permite apenas POST (+ OPTIONS para pré-voo se precisar).
+  // CORS preflight
   if (req.method === "OPTIONS") return res.status(204).end();
+
+  // Method check
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST, OPTIONS");
-    return res.status(405).json({ ok: false, message: "Method not allowed" });
+    return res.status(405).json({
+      ok: false,
+      error: "METHOD_NOT_ALLOWED",
+      message: "Only POST requests are accepted.",
+    });
+  }
+
+  // Rate limiting
+  const ip = req.ip || "unknown";
+  if (!checkRateLimit(ip)) {
+    res.setHeader(
+      "Retry-After",
+      String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)),
+    );
+    return res.status(429).json({
+      ok: false,
+      error: "RATE_LIMITED",
+      message:
+        "Too many requests. Please wait a few minutes before trying again.",
+    });
   }
 
   try {
-    const { name, email, phone = "", message } = await readJsonBody(req);
+    // Body parsing
+    let body;
+    try {
+      body = await readJsonBody(req);
+    } catch {
+      return res.status(422).json({
+        ok: false,
+        error: "VALIDATION_ERROR",
+        message: "One or more fields are invalid.",
+        fields: { body: "Invalid JSON payload." },
+      });
+    }
 
-    // Validações simples
-    if (!name || String(name).trim().length < 2) {
-      return res.status(400).json({ ok: false, message: "Nome inválido." });
+    // Sanitize inputs
+    const name = sanitize(body.name);
+    const message = sanitize(body.message);
+    const emailRaw = typeof body.email === "string" ? body.email.trim() : "";
+
+    // Validate (collect all errors, not fail-fast)
+    const fields = {};
+
+    if (!name) {
+      fields.name = "Please enter your name.";
+    } else if (name.length > 100) {
+      fields.name = "Name must be 100 characters or fewer.";
     }
-    if (!email || !/.+@.+\..+/.test(email)) {
-      return res.status(400).json({ ok: false, message: "Email inválido." });
+
+    if (!emailRaw || !validator.isEmail(emailRaw)) {
+      fields.email = "Please enter a valid email address.";
     }
-    if (!message || String(message).trim().length < 5) {
-      return res.status(400).json({ ok: false, message: "Mensagem inválida." });
+
+    if (!message) {
+      fields.message = "Please enter a message.";
+    } else if (message.length > 5000) {
+      fields.message = "Message must be 5000 characters or fewer.";
     }
+
+    if (Object.keys(fields).length > 0) {
+      return res.status(422).json({
+        ok: false,
+        error: "VALIDATION_ERROR",
+        message: "One or more fields are invalid.",
+        fields,
+      });
+    }
+
+    // Normalize email after validation
+    const email = validator.normalizeEmail(emailRaw) || emailRaw;
 
     const to = CLINICA_EMAIL || EMAIL_USER;
     const subject = `Novo contato do portfólio — ${name}`;
@@ -79,26 +183,22 @@ export default async function handler(req, res) {
     const text = [
       `Nome: ${name}`,
       `Email: ${email}`,
-      phone ? `Telefone: ${phone}` : null,
       "",
       "Mensagem:",
       message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    ].join("\n");
 
     const html = `
       <div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#0f2030">
         <h2 style="margin:0 0 8px 0;">Novo contato do portfólio</h2>
         <p><strong>Nome:</strong> ${escapeHtml(name)}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        ${phone ? `<p><strong>Telefone:</strong> ${escapeHtml(phone)}</p>` : ""}
         <hr/>
         <p style="white-space:pre-wrap">${escapeHtml(message)}</p>
       </div>
     `;
 
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"Portfólio — Contato" <${EMAIL_USER}>`,
       to,
       replyTo: email,
@@ -107,11 +207,23 @@ export default async function handler(req, res) {
       html,
     });
 
-    return res.status(200).json({ ok: true, id: info.messageId });
+    return res.status(200).json({
+      ok: true,
+      message: "Message sent successfully.",
+    });
   } catch (err) {
-    console.error("Email error:", err?.code, err?.message);
-    return res
-      .status(500)
-      .json({ ok: false, message: "Falha ao enviar o e-mail." });
+    console.error(
+      JSON.stringify({
+        level: "error",
+        event: "email_send_failed",
+        code: err?.code,
+        message: err?.message,
+      }),
+    );
+    return res.status(500).json({
+      ok: false,
+      error: "SERVER_ERROR",
+      message: "Failed to send your message. Please try again later.",
+    });
   }
 }

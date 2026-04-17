@@ -1,15 +1,16 @@
-import { useState } from "react";
 import styles from "./App.module.css";
 import Nav from "./components/Nav";
 import RainCanvas from "./components/RainCanvas";
 import LanyardBadge from "./components/LanyardBadge";
+import { useActiveSection } from "./hooks/useActiveSection";
 
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("about");
+  const { activeSection: activeTab, setActiveSection: setActiveTab } =
+    useActiveSection();
 
   const render = () => {
     switch (activeTab) {

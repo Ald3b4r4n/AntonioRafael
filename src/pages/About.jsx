@@ -3,17 +3,17 @@ import SEO from "../components/SEO";
 
 export default function About() {
   return (
-    <section className="section">
+    <section className="section" aria-labelledby="about-title">
       <SEO
-        title="Início"
-        description="Bem-vindo ao meu portfólio. Desenvolvedor Full Stack com foco em React e JavaScript."
+        title="Antônio Rafael — CEO & Full Stack Developer"
+        description="CEO da A&R Software Development. Engenheiro de Software Full Stack. React, Node.js, TypeScript. Construo produtos digitais que resolvem problemas reais."
         path="/"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Antônio Rafael Souza Cruz de Noronha",
-          jobTitle: "Full Stack Developer",
-          url: "https://seu-dominio.com/",
+          jobTitle: "CEO & Full Stack Developer",
+          url: "https://antoniorafael.dev/",
           sameAs: [
             "https://www.linkedin.com/in/antonio-rafael-souza-cruz-de-noronha-249539111/",
             "https://github.com/Ald3b4r4n",
@@ -23,65 +23,89 @@ export default function About() {
       />
       <div className="container">
         <div className={styles.hero}>
-          <div className={styles.left}>
-            <div className={styles.pill}>
+          {/* Photo + eyebrow row */}
+          <div className={styles.intro}>
+            <img
+              src="/hero-photo.jpg"
+              alt="Antônio Rafael"
+              className={styles.avatar}
+              width={72}
+              height={72}
+              loading="eager"
+              decoding="async"
+            />
+            <div className={styles.eyebrow}>
               <span className={styles.dot} aria-hidden="true" />
-              <span className={styles.pillText}>
-                O trabalho duro supera o talento, quando o talento não trabalha
-                duro!
-              </span>
+              CEO — A&amp;R Software Development
             </div>
+          </div>
 
-            <h1 className={styles.title}>
-              BEM-VINDO AO MEU
-              <br className={styles.titleBreak} />
-              <span>PORTFÓLIO</span>
-            </h1>
-            <h2 className={styles.subtitle}>Desenvolvedor Full Stack</h2>
+          <h1 id="about-title" className={styles.display}>
+            Construo produtos
+            <br />
+            <span className={styles.gradient}>que importam.</span>
+          </h1>
 
-            <p className={styles.lead}>
-              Olá! Sou Antônio Rafael Souza Cruz de Noronha, estudante de
-              Engenharia de Software, conhecimento consolidado em
-              desenvolvimento web, com ênfase em React, JavaScript e CSS e suas
-              variações (Sass, Styled Components, Tailwind CSS), além de
-              trabalhar com bancos de dados relacionais (SQL, Supabase, Neon) e
-              não relacionais (Firebase, MongoDB). Trago de minha jornada
-              valores como disciplina, responsabilidade e trabalho em equipe.
-              Sou casado e pai, sempre em busca de evolução pessoal e
-              profissional.
+          <p className={styles.lead}>
+            Engenheiro de Software com foco em React, React Native, Next.js,
+            Node.js e TypeScript. Transformo ideias em aplicações performáticas,
+            acessíveis e com design que faz diferença.
+          </p>
+
+          {/* Bio pessoal */}
+          <div className={styles.bio}>
+            <p>
+              Sou Antônio Rafael — estudante de Engenharia de Software, policial
+              militar, casado e pai. Fundei a A&amp;R Software Development para
+              construir produtos digitais que resolvem problemas reais do dia a
+              dia. Trago da minha jornada disciplina, responsabilidade e uma
+              obsessão por entregar software que funciona.
             </p>
+          </div>
 
+          <div className={styles.actions}>
+            <a
+              href="https://github.com/Ald3b4r4n"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.btnPrimary}
+            >
+              Ver no GitHub
+              <span className={styles.arrow} aria-hidden="true">
+                &rarr;
+              </span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/antonio-rafael-souza-cruz-de-noronha-249539111/"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.btnSecondary}
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://wa.me/5561982887294"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.btnSecondary}
+            >
+              WhatsApp
+            </a>
+          </div>
+
+          <div className={styles.stack}>
+            <span className={styles.stackLabel}>Stack principal</span>
             <div className={styles.chips}>
+              <span>Python</span>
               <span>React</span>
-              <span>JavaScript</span>
+              <span>React Native</span>
+              <span>Next.js</span>
+              <span>TypeScript</span>
               <span>Node.js</span>
-              <span>SQL</span>
+              <span>PostgreSQL</span>
+              <span>Firebase</span>
               <span>MongoDB</span>
               <span>Supabase</span>
-            </div>
-
-            <div className={styles.social}>
-              <a
-                href="https://github.com/Ald3b4r4n"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
-              </a>
-              <a
-                href="https://www.linkedin.com/in/antonio-rafael-souza-cruz-de-noronha-249539111/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://wa.me/5561982887294"
-                target="_blank"
-                rel="noreferrer"
-              >
-                WhatsApp
-              </a>
             </div>
           </div>
         </div>

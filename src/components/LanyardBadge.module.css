@@ -1,29 +1,51 @@
-/* Palco do crachá */
+/* LanyardBadge (T027 — migrated to semantic tokens)
+ *
+ * This is the most decorative component in the site — a physical-metaphor
+ * badge hanging from a lanyard. Many rgba stops form unique glass / metal /
+ * plastic effects that don't map to a single semantic token; those are kept
+ * as component-specific values with comments explaining why. */
+
+/* Visually-hidden caption (T034) — accessible name for the figure,
+ * invisible to sighted users but read by assistive tech. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Palco do crachá (a <figure> since T034 — strip UA default margin so
+ * the switch from <div> to <figure> is layout-identical) */
 .stage {
+  margin: 0;
   /* Variáveis compartilhadas */
   --ring: 30px;
   --hook-h: 26px;
-  --gap: 12px;
+  --gap: var(--space-3);
 
-  /* Base desktop: mais estável em diferentes resoluções/alturas */
-  --card-w: clamp(260px, min(20vw, 32vh), 360px);
-  /* Altura atrelada à largura para evitar corte em qualquer desktop */
+  /* Base desktop: scaled down for Editorial Premium — signature, not focal */
+  --card-w: clamp(200px, min(15vw, 26vh), 280px);
   --card-h: calc(var(--card-w) * 1.32);
-  --strap-h: clamp(120px, 14svh, 150px);
+  --strap-h: clamp(90px, 11svh, 120px);
   --ceiling-h: 10px;
 
   position: fixed;
   top: var(--nav-h, 72px);
   left: 0;
   /* Controlado por CSS var para permitir ajuste quando o menu abrir */
-  z-index: var(--lanyard-z, 95); /* abaixo do Nav (100) mas acima do conteúdo */
+  z-index: var(--lanyard-z, var(--z-lanyard));
   width: 100%;
   pointer-events: none; /* permite clicar "através" do stage */
 
   /* Altura mínima calculada (sem usar env() aqui para não descolar) */
   height: calc(
     var(--ceiling-h) + var(--strap-h) + var(--ring) + var(--hook-h) + var(--gap) +
-      var(--card-h) + clamp(24px, 6dvh, 56px) + var(--stretch, 0px)
+      var(--card-h) + clamp(var(--space-6), 6dvh, var(--space-9)) + var(--stretch, 0px)
   );
 
   display: flex;
@@ -33,8 +55,8 @@
   contain: layout paint;
   isolation: isolate;
   overflow: visible;
-  opacity: var(--lanyard-opacity, 1);
-  transition: opacity 0.18s ease;
+  opacity: var(--lanyard-opacity, 0.85);
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 
 /* Barra (ceiling) — CENTRAL e colada ao topo do palco */
@@ -45,16 +67,17 @@
   transform: translateX(-50%);
   width: clamp(180px, 28vw, 320px);
   height: var(--ceiling-h);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
+  /* Component-specific: frosted-bar glass with primary tint */
   background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.2),
-      rgba(255, 255, 255, 0.06)
+      var(--color-surface)
     ),
     linear-gradient(90deg, rgba(120, 232, 255, 0.35), rgba(182, 197, 255, 0.35));
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  z-index: 1;
+  border: 1px solid var(--color-border-strong);
+  z-index: var(--z-content);
 }
 
 /* Pivô nasce logo abaixo do ceiling */
@@ -84,9 +107,10 @@
   transform: translateX(-50%);
   width: 14px;
   height: calc(var(--strap-h) + var(--stretch, 0px));
+  /* Component-specific: woven-strap texture (vertical shading + repeating weave) */
   background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.1),
+      var(--color-surface-hover),
       rgba(255, 255, 255, 0.03)
     ),
     repeating-linear-gradient(
@@ -95,7 +119,7 @@
       transparent 2px 6px
     );
   border-radius: 8px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 var(--space-3) 30px rgba(0, 0, 0, 0.45);
 }
 .ring {
   position: absolute;
@@ -104,10 +128,11 @@
   top: calc(var(--strap-h) + var(--stretch, 0px));
   width: var(--ring);
   height: var(--ring);
-  border-radius: 50%;
+  border-radius: var(--radius-round);
+  /* Component-specific: metallic ring with cyan inner glow */
   border: 3px solid rgba(210, 230, 255, 0.85);
-  box-shadow: inset 0 0 8px rgba(120, 232, 255, 0.35),
-    0 6px 14px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 var(--space-2) rgba(120, 232, 255, 0.35),
+    var(--shadow-sm);
   background: radial-gradient(
     circle at 30% 30%,
     rgba(255, 255, 255, 0.6),
@@ -121,10 +146,11 @@
   top: calc(var(--strap-h) + var(--ring) + var(--stretch, 0px));
   width: 26px;
   height: var(--hook-h);
+  /* Component-specific: metallic clip — same finish as .ring */
   border: 3px solid rgba(210, 230, 255, 0.85);
   border-top: none;
-  border-radius: 0 0 14px 14px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Cartão */
@@ -138,14 +164,16 @@
   );
   width: var(--card-w);
   height: var(--card-h);
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  clip-path: inset(0 round 18px);
+  clip-path: inset(0 round var(--radius-lg));
   border: 1px solid rgba(255, 255, 255, 0.22);
+  /* Component-specific: badge card glass — strong surface + primary
+   * radial highlight + navy base gradient. */
   background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.06)
+      var(--color-surface-strong),
+      var(--color-surface)
     ),
     radial-gradient(
       600px 300px at 90% 10%,
@@ -153,7 +181,7 @@
       transparent 60%
     ),
     linear-gradient(180deg, #0e1e2f, #0c1a29);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  box-shadow: var(--shadow-xl);
   display: grid;
   grid-template-columns: 22% 1fr;
   grid-template-rows: 1fr auto auto;
@@ -174,7 +202,7 @@
 
 .sideBand {
   grid-row: 1 / 4;
-  background: linear-gradient(180deg, var(--neon-2), var(--neon));
+  background: var(--gradient-primary);
   mix-blend-mode: screen;
 }
 
@@ -184,12 +212,12 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 12px;
+  padding: var(--space-3);
 }
 .photoArea img {
   width: 84%;
   height: auto;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   filter: saturate(90%);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
   user-select: none;
@@ -202,25 +230,25 @@
   grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px 16px 12px 14px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4) var(--space-3) 14px;
   /* evita corte de acentos, mas não estoura layout */
   overflow: visible;
   contain: layout paint;
 }
 .name {
-  font-family: "Outfit", sans-serif;
-  font-weight: 900;
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-black);
   letter-spacing: 2px;
-  font-size: clamp(18px, 2.8vw, 28px);
-  /* respiro suficiente sem “murchar” o título */
-  line-height: 1.08;
+  font-size: clamp(var(--font-size-lg), 2.8vw, var(--font-size-2xl));
+  /* respiro suficiente sem "murchar" o título */
+  line-height: var(--line-height-tight);
   margin-top: 0;
-  color: #0b1f2f;
-  background: linear-gradient(180deg, var(--neon), #ffffff);
+  color: var(--color-text-on-primary);
+  background: linear-gradient(180deg, var(--color-primary), var(--palette-white));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 8px 30px rgba(120, 232, 255, 0.35);
+  text-shadow: 0 var(--space-2) 30px rgba(120, 232, 255, 0.35);
   max-width: 100%;
   /* Quebra natural: evita fragmentação de palavras no desktop */
   overflow-wrap: normal;
@@ -229,12 +257,12 @@
 }
 .role {
   /* garante legibilidade e quebra em telas estreitas */
-  font-size: clamp(13px, 3.3vw, 14px);
-  line-height: 1.2;
+  font-size: clamp(13px, 3.3vw, var(--font-size-sm));
+  line-height: var(--line-height-snug);
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
-  color: #eaf3ff;
+  color: var(--color-text);
   margin-top: 2px;
 }
 @container badge (max-width: 280px) {
@@ -244,12 +272,12 @@
 }
 @container badge (max-width: 240px) {
   .role {
-    font-size: 12px;
+    font-size: var(--font-size-xs);
   }
 }
 .meta {
-  color: #c9d7e6;
-  font-weight: 600;
+  color: var(--color-text-subtle);
+  font-weight: var(--font-weight-semibold);
   opacity: 0.9;
   max-width: 100%;
   /* Mantém quebra apenas quando necessário, sem cortar palavras */
@@ -261,6 +289,7 @@
   position: absolute;
   inset: -40% -10% auto -10%;
   height: 60%;
+  /* Component-specific: plastic sheen overlay */
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.4),
@@ -296,6 +325,9 @@
     z-index: var(--lanyard-z, 90);
     /* Evita que o container cause overscroll/pull-to-refresh durante o gesto */
     overscroll-behavior: contain;
+    /* Remove containment on mobile so dragging doesn't clip against a barrier */
+    contain: none;
+    overflow: visible;
   }
   /* Dá um pouco mais de área útil para o texto sem alterar o visual geral */
   .card {
@@ -327,7 +359,7 @@
 @media (min-width: 1366px) {
   .stage { --card-h: calc(var(--card-w) * 1.32); }
   .card { grid-template-columns: 18% 1fr; }
-  .name { letter-spacing: 1.6px; font-size: clamp(18px, 2.4vw, 30px); }
+  .name { letter-spacing: 1.6px; font-size: clamp(var(--font-size-lg), 2.4vw, 30px); }
 }
 
 /* DESKTOP grande (≥ 1600px): suavizar espaçamento, mantendo largura adaptativa */

@@ -1,0 +1,246 @@
+/**
+ * Design tokens (T024) — semantic CSS custom properties.
+ *
+ * Single source of truth for the portfolio's visual language, extracted from
+ * existing CSS modules to enable incremental migration without a redesign.
+ * Names are intentionally semantic (purpose, not literal color) so the system
+ * stays themeable for future dark-mode variants or brand adjustments.
+ *
+ * Migration strategy:
+ *   - Phase 1 (this PR): publish tokens + alias existing legacy vars so nothing
+ *     breaks. CSS modules may continue to reference the legacy names
+ *     (--navy-800, --neon, --radius, --stroke, --glass, --shadow-1, etc.).
+ *   - Phase 2+ (T025–T029): each module adopts semantic tokens directly.
+ *
+ * Do NOT delete the legacy aliases at the bottom of this file until every
+ * consumer has been migrated.
+ */
+
+:root {
+  /* ============================================================
+   * Color — raw palette (reference only; prefer semantic tokens)
+   * ============================================================ */
+  --palette-navy-900: #0a1723;
+  --palette-navy-800: #0f2030;
+  --palette-navy-700: #14273b;
+  --palette-navy-950: #08202f;
+  --palette-navy-ink: #0b1f2f;
+
+  --palette-cyan-400: #78e8ff;   /* neon primary */
+  --palette-cyan-300: #6fd3ff;   /* accent */
+  --palette-indigo-200: #b6c5ff; /* neon secondary */
+
+  /* Warm accents — Editorial Premium direction */
+  --palette-amber-400: #fbbf24;
+  --palette-amber-300: #fcd34d;
+  --palette-amber-200: #fde68a;
+  --palette-rose-400: #fb7185;
+  --palette-rose-300: #fda4af;
+
+  --palette-white: #ffffff;
+  --palette-text-hi: #eaf2fb;       /* 14.8:1 on --color-bg */
+  --palette-text-hi-alt: #eef6ff;   /* 15.2:1 on --color-bg */
+  --palette-text-lead: #d7e3ef;     /* 12.1:1 on --color-bg */
+  --palette-text-md: #b9c7d8;       /* 9.35:1 on --color-bg */
+  --palette-text-lo: #c9d7e6;       /* 10.8:1 on --color-bg */
+  --palette-text-chip: #e6f2ff;     /* 14.6:1 on --color-bg */
+
+  /* ============================================================
+   * Color — semantic
+   * ============================================================ */
+  --color-bg: var(--palette-navy-800);
+  --color-bg-alt: var(--palette-navy-900);
+  --color-bg-deep: var(--palette-navy-700);
+
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.1);
+  --color-surface-strong: rgba(255, 255, 255, 0.12);
+
+  --color-text: var(--palette-text-hi);
+  --color-text-strong: var(--palette-text-hi-alt);
+  --color-text-lead: var(--palette-text-lead);
+  --color-text-muted: var(--palette-text-md);
+  --color-text-subtle: var(--palette-text-lo);
+  --color-text-chip: var(--palette-text-chip);
+  --color-text-on-primary: var(--palette-navy-950);
+
+  --color-primary: var(--palette-cyan-400);
+  --color-primary-2: var(--palette-indigo-200);
+  --color-accent: var(--palette-cyan-300);
+  --color-warm: var(--palette-amber-400);
+  --color-warm-soft: var(--palette-amber-200);
+
+  --color-border: rgba(255, 255, 255, 0.16);
+  --color-border-strong: rgba(255, 255, 255, 0.25);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+
+  --color-grid-line: rgba(180, 210, 240, 0.06);
+  --color-grid-bold: rgba(180, 210, 240, 0.1);
+
+  --color-scrollbar-track: #0a141f;
+
+  /* Active / highlight wash — used for active tabs, selected nav items,
+   * chip hover, and card focus states across multiple modules. */
+  --color-active-bg: rgba(168, 219, 255, 0.18);
+  --color-active-bg-subtle: rgba(168, 219, 255, 0.08);
+  --color-active-border: rgba(168, 219, 255, 0.45);
+
+  /* Gradient primitives */
+  --gradient-primary: linear-gradient(
+    180deg,
+    var(--color-primary-2),
+    var(--color-primary)
+  );
+
+  /* ============================================================
+   * Typography
+   * ============================================================ */
+  --font-family-display: "Outfit", system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-family-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* Static sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 28px;
+  --font-size-3xl: 36px;
+  --font-size-4xl: 48px;
+  --font-size-5xl: 64px;
+  --font-size-6xl: 80px;
+
+  /* Fluid sizes (clamp-based responsive type) */
+  --font-size-fluid-body: clamp(15px, 1.2vw, 17px);
+  --font-size-fluid-lead: clamp(16px, 1.4vw, 20px);
+  --font-size-fluid-h2: clamp(22px, 2.8vw, 36px);
+  --font-size-fluid-h1: clamp(36px, 6vw, 72px);
+  --font-size-fluid-display: clamp(44px, 8vw, 96px);
+
+  --line-height-tight: 1.08;
+  --line-height-snug: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+  --letter-spacing-wider: 0.1em;
+
+  /* ============================================================
+   * Spacing (4px base scale)
+   * ============================================================ */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+
+  /* Fluid spacing helpers */
+  --space-section-y: clamp(12px, 3vh, 48px);
+  --space-container-x: clamp(16px, 3.5vw, 32px);
+
+  /* Minimum tap-target size for mobile usability (T040).
+   * Matches Apple HIG, Material, and WCAG 2.5.5 AAA target size. */
+  --tap-target-min: 44px;
+
+  /* ============================================================
+   * Radius
+   * ============================================================ */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;   /* matches legacy --radius */
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* ============================================================
+   * Shadows (elevation scale)
+   * ============================================================ */
+  --shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.35);  /* matches legacy --shadow-1 */
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45); /* matches legacy --shadow-2 */
+  --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.55);
+
+  /* Soft inner/focus glows */
+  --shadow-focus-ring: 0 0 0 4px rgba(120, 180, 235, 0.35);
+
+  /* ============================================================
+   * Z-index layers
+   * ============================================================ */
+  --z-base: 0;
+  --z-content: 1;
+  --z-background: -1;
+  --z-lanyard: 95;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* ============================================================
+   * Motion
+   * ============================================================ */
+  --duration-instant: 0.1s;
+  --duration-fast: 0.15s;
+  --duration-base: 0.2s;
+  --duration-slow: 0.35s;
+  --duration-slower: 0.6s;
+
+  --ease-standard: ease;
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  /* ============================================================
+   * Focus ring (a11y — T032 will use these)
+   * ============================================================ */
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-shadow: 0 0 0 var(--focus-ring-width)
+    rgba(120, 232, 255, 0.55);
+
+  /* ============================================================
+   * Layout
+   * ============================================================ */
+  --container-max: 1120px;
+  --container-narrow: 640px;
+  --nav-height: 72px;
+
+  /* ============================================================
+   * Backdrop / glass
+   * ============================================================ */
+  --backdrop-blur: blur(10px) saturate(120%);
+
+  /* ============================================================
+   * Breakpoints (for reference in JS; CSS media queries use raw values)
+   * ============================================================ */
+  --bp-mobile: 720px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1366px;
+  --bp-desktop-lg: 1600px;
+  --bp-desktop-xl: 1920px;
+
+  /* ============================================================
+   * Runtime aliases (set by JS at runtime — do NOT remove)
+   * ============================================================ */
+  /* Nav.jsx measures the header and writes --nav-h to :root;
+   * consumed by App.module.css, LanyardBadge, Nav mobile panel. */
+  --nav-h: var(--nav-height);
+}

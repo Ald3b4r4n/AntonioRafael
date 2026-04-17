@@ -1,67 +1,134 @@
+/* Contact page — Editorial Premium */
 .header {
-  text-align: center;
-  margin-bottom: clamp(14px, 3.5vh, 34px);
+  margin-bottom: clamp(var(--space-6), 4vh, var(--space-9));
+}
+.eyebrow {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-warm);
 }
 .header h1 {
-  margin: 0 0 6px 0;
-  font-size: clamp(28px, 4.4vw, 48px);
-  background: linear-gradient(180deg, #eaf3ff, #a9c6ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0 0 var(--space-3) 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-fluid-h1);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-strong);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
 }
 .header p {
-  color: var(--muted);
+  margin: 0;
+  font-size: var(--font-size-fluid-lead);
+  color: var(--color-text-muted);
 }
 
 .card {
   position: relative;
-  width: min(720px, 100%);
+  width: min(var(--container-narrow), 100%);
   margin: 0 auto;
   overflow: hidden;
-  padding: clamp(18px, 3vw, 28px);
-  border-radius: var(--radius);
-  border: 1px solid var(--stroke);
-  background: var(--glass);
-  box-shadow: var(--shadow-1);
+  padding: clamp(var(--space-6), 4vw, var(--space-8));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 20, 35, 0.85) 0%,
+    rgba(10, 20, 35, 0.92) 100%
+  );
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
 }
 
 .cardGrid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.16;
-  background: repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.12) 0 1px,
-      transparent 1px 24px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.12) 0 1px,
-      transparent 1px 24px
-    );
+  display: none;
 }
 
 .form {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 .form input,
 .form textarea {
   width: 100%;
   padding: 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   outline: none;
-  border: 1px solid var(--stroke);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text);
-  transition: 0.2s ease;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: var(--duration-base) var(--ease-standard);
 }
-.form input:focus,
-.form textarea:focus {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 0 4px rgba(120, 180, 235, 0.2);
+
+/* Invalid state — red border + red halo, accessible cue beyond color
+   (backed up by aria-invalid + visible text error message). */
+.form input[aria-invalid="true"],
+.form textarea[aria-invalid="true"] {
+  border-color: #ff8a8a;
+  box-shadow: 0 0 0 3px rgba(255, 138, 138, 0.2);
+}
+
+.fieldGroup {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.fieldError {
+  margin: 0;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  color: #ffb4b4; /* ~7.6:1 on --color-bg navy — meets WCAG AA */
+  line-height: var(--line-height-snug);
+}
+
+.formStatus {
+  margin: 10px 0 0;
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  border: 1px solid transparent;
+}
+.formStatus.success {
+  color: #b5f5d0;
+  background: rgba(120, 255, 180, 0.08);
+  border-color: rgba(120, 255, 180, 0.35);
+}
+.formStatus.error {
+  color: #ffc7c7;
+  background: rgba(255, 138, 138, 0.08);
+  border-color: rgba(255, 138, 138, 0.4);
+}
+
+/* SR-only visually-hidden helper (form uses .sr-only for labels but the
+   class isn't defined globally yet — define it here scoped to the
+   module to avoid scope leakage and guarantee SR label availability). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.form button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.form input:focus-visible,
+.form textarea:focus-visible {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  box-shadow: var(--focus-ring-shadow);
+  outline: none;
 }
 .form textarea {
   min-height: 140px;
@@ -69,33 +136,86 @@
 }
 
 .form button {
-  margin-top: 6px;
-  height: 46px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: linear-gradient(180deg, var(--neon-2), var(--neon));
-  color: #08202f;
-  font-weight: 900;
+  margin-top: var(--space-2);
+  height: 48px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--color-text-strong);
+  color: var(--color-bg-alt);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
   letter-spacing: 0.3px;
   cursor: pointer;
-  transition: 0.18s ease;
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
 }
 .form button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(234, 242, 251, 0.15);
+  background: var(--palette-white);
 }
 
-.links {
+/* Direct contact buttons — primary CTAs */
+.directContact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  width: min(var(--container-narrow), 100%);
+  margin: 0 auto var(--space-6) auto;
+}
+@media (max-width: 500px) {
+  .directContact {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contactBtn {
   display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin-top: 14px;
-}
-.links a {
-  color: var(--neon);
-  font-weight: 800;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-strong);
+  background: rgba(10, 20, 35, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   text-decoration: none;
+  color: var(--color-text);
+  min-height: var(--tap-target-min);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
 }
-.links a:hover {
-  text-decoration: underline;
+.contactBtn:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  background: rgba(10, 20, 35, 0.92);
+}
+.contactBtn strong {
+  display: block;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-strong);
+}
+
+.contactIcon {
+  font-size: var(--font-size-2xl);
+  flex-shrink: 0;
+}
+
+.contactHint {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.formLabel {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
 }
