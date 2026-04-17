@@ -1,4 +1,4 @@
-/* eslint-env node */
+/* global process */
 /**
  * Serverless Function (Vercel, ESM) — Contact form handler v2.
  *

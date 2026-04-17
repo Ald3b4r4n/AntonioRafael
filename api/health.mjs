@@ -1,4 +1,4 @@
-/* eslint-env node */
+/* global process */
 /**
  * Serverless Function (Vercel, ESM) — Health check endpoint v1.1.
  *

@@ -98,7 +98,7 @@ describe("buildWebsiteSchema", () => {
   it("references the Person @id via publisher", () => {
     const schema = buildWebsiteSchema({ baseUrl });
     expect(schema.publisher).toBeDefined();
-    expect(schema.publisher["@id"]).toBe(`${baseUrl}/#person`);
+    expect((schema.publisher as Record<string, unknown>)["@id"]).toBe(`${baseUrl}/#person`);
   });
 
   it("accepts an optional siteName override", () => {
