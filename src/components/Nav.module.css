@@ -205,6 +205,8 @@
   font-weight: var(--font-weight-extrabold);
   font-size: var(--font-size-sm);
   text-align: left;
+  /* T040: WCAG 2.5.5 tap-target minimum on mobile. */
+  min-height: var(--tap-target-min);
 }
 .mobileItem.active {
   background: linear-gradient(

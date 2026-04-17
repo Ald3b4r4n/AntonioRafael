@@ -140,14 +140,25 @@ test.describe('Accessibility baseline (T023)', () => {
 
 test.describe('Accessibility hard gate (T046)', () => {
   /**
-   * Navigate to a section by clicking the corresponding tab button in
-   * the desktop nav bar. The `nav[aria-label="Seções"]` scopes the
-   * selector so we never collide with the mobile-panel buttons (which
-   * exist in the DOM but have `pointer-events: none` when closed).
+   * Navigate to a section by clicking the corresponding tab button.
+   * On desktop viewports the desktop tab bar is visible; on mobile
+   * the tabs are hidden behind a hamburger menu, so we open the
+   * mobile panel first and click from there.
    */
   async function navigateToSection(page: Page, label: string) {
-    const tab = page.locator('nav[aria-label="Seções"] button', { hasText: label });
-    await tab.click();
+    const desktopTab = page.locator('nav[aria-label="Seções"] button', { hasText: label });
+
+    if (await desktopTab.isVisible({ timeout: 500 }).catch(() => false)) {
+      await desktopTab.click();
+    } else {
+      // Mobile: open hamburger, then tap the mobile-panel button
+      const hamburger = page.locator('button[aria-label="Abrir menu"]');
+      if (await hamburger.isVisible({ timeout: 500 }).catch(() => false)) {
+        await hamburger.click();
+      }
+      await page.locator('#mobile-menu button', { hasText: label }).click();
+    }
+
     // Wait for the React state swap + settle
     await page.waitForTimeout(400);
     await page.waitForLoadState('networkidle');
