@@ -1,6 +1,7 @@
 import { useRef, useEffect, useMemo } from "react";
 import { motion as Motion, useAnimation } from "framer-motion";
 import styles from "./LanyardBadge.module.css";
+import useReducedMotion from "../hooks/useReducedMotion.js";
 
 export default function LanyardBadge() {
   const controls = useAnimation();
@@ -8,6 +9,27 @@ export default function LanyardBadge() {
   const stageRef = useRef(null);
   const cordRef = useRef(null);
   const sMaxRef = useRef(140);
+
+  // T037: shared reactive accessor for prefers-reduced-motion. The
+  // value is mirrored into a ref so non-React callbacks (physics RAF
+  // loop, pan-end handler) can read the current preference without
+  // re-binding. The user-initiated pan remains interactive even when
+  // reduced — WCAG permits animation triggered by explicit user input.
+  const reducedMotion = useReducedMotion();
+  const reducedMotionRef = useRef(reducedMotion);
+  useEffect(() => {
+    reducedMotionRef.current = reducedMotion;
+    // If the preference flips on while idle, freeze the pendulum.
+    if (reducedMotion && !isInteractingRef.current) {
+      controls.stop();
+      controls.set({ rotate: 0 });
+    } else if (!reducedMotion && !isInteractingRef.current) {
+      // Restart the ambient oscillation if the user turns the
+      // preference back off mid-session.
+      startIdle();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion]);
 
   // Física (refs para estado contínuo)
   const thetaRef = useRef(0); // rad
@@ -27,8 +49,16 @@ export default function LanyardBadge() {
     return 16;
   }, []);
 
+  // Honor prefers-reduced-motion via the shared useReducedMotion hook
+  // (T037). The ambient idle oscillation is suppressed; the
+  // user-initiated pan animation is preserved (WCAG allows animation
+  // triggered by explicit user interaction even under reduced-motion).
   const startIdle = () => {
     if (isInteractingRef.current) return;
+    if (reducedMotionRef.current) {
+      controls.set({ rotate: 0 });
+      return;
+    }
     controls.start({
       rotate: [0, 2.6, -2.6, 0],
       transition: { duration: 6, repeat: Infinity, ease: "easeInOut" },
@@ -236,12 +266,31 @@ export default function LanyardBadge() {
   };
 
   return (
-    <div ref={stageRef} className={styles.stage}>
-      <div className={styles.ceiling} />
+    // T034: The lanyard is a single compound visual — semantically a
+    // <figure>. The <figcaption> below is the accessible name and is
+    // read once as a coherent unit instead of announcing every inner
+    // decorative div. The badge's interaction is purely aesthetic
+    // (drag-to-swing), so it is NOT keyboard-operable by design; WCAG
+    // 2.1.1 does not apply because no content/functionality is gated
+    // behind the drag gesture. All decorative internals are
+    // aria-hidden to prevent duplicate announcements of the name/role
+    // that are already in the figcaption.
+    <figure
+      ref={stageRef}
+      className={styles.stage}
+      aria-labelledby="lanyard-caption"
+    >
+      <figcaption id="lanyard-caption" className={styles.srOnly}>
+        Crachá virtual de Antônio Rafael, CEO &amp; Full Stack Developer da
+        A&amp;R Software Development. Elemento decorativo — arraste com o mouse ou
+        toque para balançar.
+      </figcaption>
+      <div className={styles.ceiling} aria-hidden="true" />
       <Motion.div
         className={styles.pivot}
         animate={controls}
         style={{ transformOrigin: "50% 0%" }}
+        aria-hidden="true"
       >
         <div ref={cordRef} className={styles.cord} />
         <div className={styles.ring} />
@@ -254,10 +303,16 @@ export default function LanyardBadge() {
         >
           <div className={styles.sideBand} />
           <div className={styles.photoArea}>
-            {/* use /profile.jpg quando arquivo está em public/ */}
+            {/*
+             * T031: decorative profile photo. The name and role live in
+             * the figcaption above, so the image stays out of the a11y
+             * tree. alt="" + role="presentation" is redundant-safe under
+             * the parent's aria-hidden, but kept for defense in depth.
+             */}
             <img
               src="/profile.jpg"
-              alt="Foto de Antônio Rafael"
+              alt=""
+              role="presentation"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
               loading="lazy"
@@ -271,11 +326,11 @@ export default function LanyardBadge() {
               RAFAEL
             </div>
             <div className={styles.role}>Full Stack Developer</div>
-            <div className={styles.meta}>A&R Software Development</div>
+            <div className={styles.meta}>CEO &mdash; A&amp;R Software Development</div>
           </div>
           <div className={styles.gloss} />
         </Motion.div>
       </Motion.div>
-    </div>
+    </figure>
   );
 }

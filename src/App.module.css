@@ -5,41 +5,47 @@
   position: relative;
   isolation: isolate;
 
-  /* Blueprint grid (quadrícula técnica) + gradientes suaves */
+  /* BG image layer — place storm-bg.webp in /public when ready.
+   * The image sits at the bottom of the stack; mesh gradients add
+   * color washes on top. Falls back gracefully if image is missing. */
   background:
-    /* brilhos suaves */ radial-gradient(
-      1000px 600px at 15% 0%,
-      rgba(120, 232, 255, 0.1),
-      transparent 60%
-    ),
+    /* warm accent wash top-left */
     radial-gradient(
-      900px 500px at 85% 10%,
-      rgba(182, 197, 255, 0.1),
+      900px 700px at 10% -5%,
+      rgba(251, 191, 36, 0.06),
       transparent 60%
     ),
-    /* grid grosso (cada 160px) */
-      repeating-linear-gradient(
-        0deg,
-        var(--grid-bold) 0 2px,
-        transparent 2px 160px
-      ),
-    repeating-linear-gradient(
-      90deg,
-      var(--grid-bold) 0 2px,
-      transparent 2px 160px
+    /* cool primary wash top-right */
+    radial-gradient(
+      1100px 800px at 85% 0%,
+      rgba(120, 232, 255, 0.07),
+      transparent 55%
     ),
-    /* grid fino (cada 40px) */
-      repeating-linear-gradient(
-        0deg,
-        var(--grid-line) 0 1px,
-        transparent 1px 40px
-      ),
-    repeating-linear-gradient(
-      90deg,
-      var(--grid-line) 0 1px,
-      transparent 1px 40px
+    /* indigo wash center */
+    radial-gradient(
+      800px 600px at 50% 40%,
+      rgba(182, 197, 255, 0.04),
+      transparent 65%
     ),
-    /* base */ linear-gradient(180deg, var(--navy-900), var(--navy-800));
+    /* subtle warm glow bottom */
+    radial-gradient(
+      700px 500px at 70% 90%,
+      rgba(251, 113, 133, 0.03),
+      transparent 60%
+    ),
+    /* BG image — storm sky */
+    url("/storm-bg.webp"),
+    /* fallback solid gradient if image hasn't loaded yet */
+    linear-gradient(
+      180deg,
+      var(--color-bg-alt) 0%,
+      var(--color-bg) 40%,
+      #0b1825 100%
+    );
+  background-size: cover, cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center top, center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .main {
@@ -52,14 +58,14 @@
 
 .container {
   width: 100%;
-  max-width: var(--container);
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 24px clamp(16px, 3vw, 32px);
+  padding: clamp(var(--space-7), 5vh, var(--space-9)) clamp(var(--space-5), 4vw, var(--space-8));
 }
 
 .section {
   min-height: calc(100svh - var(--nav-h));
   display: flex;
   align-items: center;
-  padding-block: clamp(12px, 3vh, 48px);
+  padding-block: clamp(var(--space-7), 5vh, var(--space-10));
 }

@@ -1,9 +1,12 @@
-/* Header fixo */
+/* Header fixo (T026 — migrated to semantic tokens) */
 .header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
-  z-index: 100;
+  z-index: var(--z-nav);
   width: 100%;
+  /* Component-specific glassmorphism gradient — the semi-transparent
+   * navy stops don't map to a single token since they form a unique
+   * header backdrop effect. */
   background: linear-gradient(
     180deg,
     rgba(8, 16, 28, 0.85),
@@ -11,34 +14,34 @@
   );
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .bar {
-  max-width: 1120px;
+  max-width: 1120px; /* intentionally narrower than --container-max */
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px clamp(8px, 3vw, 16px);
+  gap: var(--space-3);
+  padding: var(--space-2) clamp(var(--space-2), 3vw, var(--space-4));
   min-height: 52px;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
 }
 .logo {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #a8dbff, #8fb6ff);
-  color: #0b1f2f;
-  font-weight: 900;
-  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--palette-cyan-400), var(--palette-indigo-200));
+  color: var(--color-text-on-primary);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-sm);
   display: grid;
   place-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
@@ -48,11 +51,11 @@
   align-items: baseline;
   gap: 6px;
   min-width: 0;
-  color: #eaf3ff;
+  color: var(--color-text);
 }
 .title strong {
-  font-weight: 800;
-  font-size: clamp(12px, 2.8vw, 14px);
+  font-weight: var(--font-weight-extrabold);
+  font-size: clamp(var(--font-size-xs), 2.8vw, var(--font-size-sm));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -60,7 +63,7 @@
 }
 .title span {
   opacity: 0.92;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: clamp(11px, 2.4vw, 13px);
   white-space: nowrap;
 }
@@ -69,7 +72,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: clamp(6px, 2.4vw, 12px);
+  gap: clamp(6px, 2.4vw, var(--space-3));
 }
 .tab {
   appearance: none;
@@ -78,55 +81,54 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(6px, 1.8vw, 10px) clamp(10px, 3.2vw, 16px);
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.05)
-    ),
-    rgba(255, 255, 255, 0.06);
-  color: #eef6ff;
-  font-weight: 800;
-  font-size: clamp(12px, 3.1vw, 14px);
+  padding: clamp(6px, 1.8vw, 8px) clamp(10px, 3.2vw, var(--space-4));
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+  font-size: clamp(var(--font-size-xs), 3.1vw, var(--font-size-sm));
   line-height: 1;
   letter-spacing: 0.2px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 4px 10px rgba(0, 0, 0, 0.18);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  transition: color var(--duration-base) var(--ease-standard),
+    background var(--duration-base) var(--ease-standard);
   white-space: nowrap;
+}
+.tab:hover {
+  color: var(--color-text-strong);
 }
 .tab:active {
   transform: translateY(1px);
 }
 .active {
-  background: linear-gradient(
-      180deg,
-      rgba(168, 219, 255, 0.18),
-      rgba(168, 219, 255, 0.08)
-    ),
-    rgba(255, 255, 255, 0.08);
-  border-color: rgba(168, 219, 255, 0.45);
+  color: var(--color-text-strong);
+  background: var(--color-surface);
 }
 
 .menuBtn {
   margin-left: auto;
   display: none;
+  /* Using inline-flex so the display swap in the mobile media query
+   * only toggles visibility, not the button's centering behavior. */
+  align-items: center;
+  justify-content: center;
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--color-border);
   background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.1),
+      var(--color-surface-hover),
       rgba(255, 255, 255, 0.05)
     ),
-    rgba(255, 255, 255, 0.06);
-  color: #eef6ff;
-  font-weight: 800;
-  font-size: 14px;
+    var(--color-surface);
+  color: var(--color-text-strong);
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--font-size-sm);
   line-height: 1;
-  padding: 8px 14px;
-  border-radius: 999px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  /* T040: WCAG 2.5.5 tap-target minimum on mobile. */
+  min-height: var(--tap-target-min);
+  min-width: var(--tap-target-min);
 }
 @media (max-width: 720px) {
   .tabs {
@@ -155,7 +157,7 @@
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.18s ease;
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 .backdrop.show {
   opacity: 1;
@@ -164,24 +166,26 @@
 
 .mobilePanel {
   position: fixed;
-  z-index: 95;
+  z-index: var(--z-lanyard);
   top: var(--nav-h);
   left: 0;
   right: 0;
+  /* Component-specific glass — slightly different tint from header. */
   background: linear-gradient(
     180deg,
     rgba(12, 24, 38, 0.95),
     rgba(12, 24, 38, 0.88)
   );
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
-  transform: translateY(-12px);
+  box-shadow: 0 var(--space-4) 36px rgba(0, 0, 0, 0.35);
+  transform: translateY(calc(-1 * var(--space-3)));
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.18s ease, opacity 0.18s ease;
+  transition: transform var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
   display: grid;
-  gap: 8px;
-  padding: 10px clamp(12px, 4vw, 18px) 14px;
+  gap: var(--space-2);
+  padding: 10px clamp(var(--space-3), 4vw, var(--space-4)) var(--space-3);
 }
 .mobilePanel.open {
   transform: translateY(0);
@@ -193,21 +197,26 @@
   appearance: none;
   border: 0;
   cursor: pointer;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: #eef6ff;
-  font-weight: 800;
-  font-size: 14px;
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-strong);
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--font-size-sm);
   text-align: left;
 }
 .mobileItem.active {
   background: linear-gradient(
       180deg,
-      rgba(168, 219, 255, 0.18),
-      rgba(168, 219, 255, 0.08)
+      var(--color-active-bg),
+      var(--color-active-bg-subtle)
     ),
-    rgba(255, 255, 255, 0.08);
-  border-color: rgba(168, 219, 255, 0.45);
+    var(--color-surface-hover);
+  border-color: var(--color-active-border);
+}
+
+/* Faixa decorativa abaixo do header */
+.ribbon {
+  /* intentionally empty — preserved for potential future use */
 }
